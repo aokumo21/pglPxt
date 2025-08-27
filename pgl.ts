@@ -131,7 +131,7 @@ namespace PGL {
             createTextSprite("-=Launcher===--------------", 0, 18),
             createTextSprite("PreGameLauncher: " + PGL_ver, 0, 26),
             createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 34),
-            createTextSprite("-=Program===---------------", 0, 50),
+            createTextSprite("-=Program===---------------", 0, 70,),
             createTextSprite(control.programName(), 0, 78),
             createTextSprite("Hash: "+ control.programHash(), 0, 86),
             createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 094),
@@ -145,9 +145,11 @@ namespace PGL {
             createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 26),
             createTextSprite("Resolution: " + screen.width + "x" + screen.height, 0, 34),
             createTextSprite("SerialNo: " + control.deviceSerialNumber(), 0, 42),
-            createTextSprite("-=Status===--------------", 0, 78),
-            createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 86),
-            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 094),
+            createTextSprite("-=Status===----------------", 0, 58),
+            createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 66),
+            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 74),
+            createTextSprite("DisplayBrightness: " + screen.brightness(), 0, 82),
+            createTextSprite("Volume: " + music.volume(), 0, 90),
             createTextSprite("uptime", 0, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/   :3`, 0, 116)
@@ -219,4 +221,14 @@ namespace PGL {
         }
         pause(5000)
     }
+    export interface ConfigInterface {
+        name: string
+        type: "boolean" | "number" | "string"
+        value: boolean | number | string
+        limits?: {
+            min?: number
+            max?: number
+        }
+    }
+
 }
