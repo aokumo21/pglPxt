@@ -1,5 +1,5 @@
 namespace PGL {
-    export const PGL_ver = "1.0.0"
+    export const PGL_ver = "0.0.1"
     export function RUN(GAME_ver: string, GAME_Author: string) {
         // 0 Transparent
         // 1 White
@@ -131,13 +131,13 @@ namespace PGL {
             createTextSprite("-=Launcher===--------------", 0, 18),
             createTextSprite("PreGameLauncher: " + PGL_ver, 0, 26),
             createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 34),
-            createTextSprite("-=Program===---------------", 0, 70,),
-            createTextSprite(control.programName(), 0, 78),
-            createTextSprite("Hash: "+ control.programHash(), 0, 86),
-            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 094),
-            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 102),
+            createTextSprite("-=Program===---------------", 0, 42,),
+            createTextSprite(control.programName(), 0, 50),
+            createTextSprite("ProgHash: "+ control.programHash(), 0, 58),
+            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 66),
+            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 74),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/   :3`, 0, 116)
+            createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
 
         let deviceInfo = [
@@ -145,14 +145,14 @@ namespace PGL {
             createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 26),
             createTextSprite("Resolution: " + screen.width + "x" + screen.height, 0, 34),
             createTextSprite("SerialNo: " + control.deviceSerialNumber(), 0, 42),
-            createTextSprite("-=Status===----------------", 0, 58),
-            createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 66),
-            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 74),
-            createTextSprite("DisplayBrightness: " + screen.brightness(), 0, 82),
-            createTextSprite("Volume: " + music.volume(), 0, 90),
-            createTextSprite("uptime", 0, 102),
+            createTextSprite("-=Status===----------------", 0, 50),
+            createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 58),
+            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 66),
+            createTextSprite("DisplayBrightness: " + screen.brightness(), 0, 74),
+            createTextSprite("Volume: " + music.volume(), 0, 82),
+            createTextSprite("uptime", 0, 90),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/   :3`, 0, 116)
+            createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
 
         // Update uptime every second
