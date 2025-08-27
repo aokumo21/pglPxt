@@ -35,7 +35,6 @@ namespace PGL {
         fffc36
         cacaca
         000000`))
-
         controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
         })
         console.log("=========================")
@@ -82,6 +81,7 @@ namespace PGL {
             pause(5000)
         }
     }
+
     function CFG_SCRN() {
         console.log("CFG_SCRN")
         game.pushScene()
@@ -127,13 +127,13 @@ namespace PGL {
 
         CfgMainMenu.setPosition(CfgMainMenu.width / 2 + 2, CfgMainMenu.height / 2 - 1)
 
-
         let softwareInfo = [
             createTextSprite("-=Launcher===--------------", 0, 18),
-            createTextSprite("PreGameLauncher: " + PGL_ver, 0, 30),
-            createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 40),
-            createTextSprite("-=Program===---------------", 0, 78),
-            createTextSprite(control.programName(), 0, 86),
+            createTextSprite("PreGameLauncher: " + PGL_ver, 0, 26),
+            createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 34),
+            createTextSprite("-=Program===---------------", 0, 50),
+            createTextSprite(control.programName(), 0, 78),
+            createTextSprite("Hash: "+ control.programHash(), 0, 86),
             createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 094),
             createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 102),
             createTextSprite("---------------------------", 0, 109),
@@ -141,8 +141,16 @@ namespace PGL {
         ]
 
         let deviceInfo = [
-            createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 20),
-            createTextSprite("uptime", 0, 30)
+            createTextSprite("-=Hardware===--------------", 0, 18),
+            createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 26),
+            createTextSprite("Resolution: " + screen.width + "x" + screen.height, 0, 34),
+            createTextSprite("SerialNo: " + control.deviceSerialNumber(), 0, 42),
+            createTextSprite("-=Status===--------------", 0, 78),
+            createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 86),
+            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 094),
+            createTextSprite("uptime", 0, 102),
+            createTextSprite("---------------------------", 0, 109),
+            createTextSprite(`github.com/aokumo21/   :3`, 0, 116)
         ]
 
         // Update uptime every second
