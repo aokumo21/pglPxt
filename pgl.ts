@@ -165,6 +165,10 @@ namespace PGL {
         GUI_ConfigTab = miniMenu.createMenuFromArray(MENUITM_ConfigList)
         GUI_ConfigTab.setButtonEventsEnabled(false)
         GUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
+        GUI_ConfigTab.setDimensions(160, 96)
+        GUI_ConfigTab.setPosition(screen.width-GUI_ConfigTab.width / 2 + 0, 60)
+        GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
+        GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
         GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
         })
 
@@ -179,19 +183,24 @@ namespace PGL {
                 for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, false)
             } else if (selectedIndex == 1) {
                 for (let s of deviceInfo) s.setFlag(SpriteFlag.Invisible, false)
-            } else if (selectedIndex == 2)
+            } else if (selectedIndex == 2) {
                 GUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
+            }
         })
 
         CfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
             if (selectedIndex == 2) {
+                GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
                 CfgMainMenu.setButtonEventsEnabled(false)
                 GUI_ConfigTab.setButtonEventsEnabled(true)
+
             }
         })
-        GUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            GUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
             GUI_ConfigTab.setButtonEventsEnabled(false)
             CfgMainMenu.setButtonEventsEnabled(true)
+
         })
 
     }
