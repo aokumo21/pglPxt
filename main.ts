@@ -38,7 +38,7 @@ namespace PreGameEnv {
         controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
         })
         console.log("=========================")
-        console.log("Check out my github!\n https://github.com/aokumo21/\nEven though there is nothing usefull on there.")
+        console.log("Check out my github!\n https://github.com/aokumo21/ \nEven though there is nothing usefull on there.")
         console.log("=========================")
         console.log("====CONSOLE=LOG=START====")
         console.log("=========================")
@@ -94,13 +94,21 @@ namespace PreGameEnv {
         let tbbs = sprites.create(tbbi, SpriteKind.Player)
         tbbs.setPosition(tbbs.width / 2, tbbs.height / 2)
 
+        function createTextSprite(text: string, x: number, y: number){
+            let sprite = textsprite.create(text, 0, 2)
+            sprite.setPosition(sprite.width / 2 + x, y)
+            sprite.setFlag(SpriteFlag.Invisible, true)
+            return sprite
+        }
+
+        // --- Menu setup ---
         let CfgMainMenu = miniMenu.createMenu(
-            miniMenu.createMenuItem("Info"),
-            miniMenu.createMenuItem("Options"),
-            miniMenu.createMenuItem("CfgEditor"),
-            miniMenu.createMenuItem("DBG"),
+            miniMenu.createMenuItem("Software"),
+            miniMenu.createMenuItem("System"),
+            miniMenu.createMenuItem("Config"),
+            miniMenu.createMenuItem("Dbg"),
         )
-        
+
         CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
         CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
         CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
@@ -111,27 +119,49 @@ namespace PreGameEnv {
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
 
-        CfgMainMenu.setPosition(CfgMainMenu.width / 2 + 2, CfgMainMenu.height / 2-1)
+        CfgMainMenu.setPosition(CfgMainMenu.width / 2 + 2, CfgMainMenu.height / 2 - 1)
 
-        let CfgPGEVerText = textsprite.create("PreGameEnv: " + settings.readString("PREGAME_ver"), 0, 2)
-        CfgPGEVerText.setPosition(CfgPGEVerText.width / 2, 20)
 
-        let CfgRamText = textsprite.create("RAM: "+control.ramSize()/1024+"KB", 0, 2)
-        CfgRamText.setPosition(CfgRamText.width / 2, 30)
-        let CfgDALText = textsprite.create("DAL-VER: " + control.deviceDalVersion(), 0, 2)
-        CfgDALText.setPosition(CfgDALText.width / 2, 40)
+        // --- Software info group ---
+        let softwareInfo = [
+            createTextSprite("PreGameEnv: " + settings.readString("PREGAME_ver"), 0, 20),
+            createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 30),
+            createTextSprite("Program:", 0, 70),
+            createTextSprite(control.programName(), 0, 80),
+            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 90),
+            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 100),
+            createTextSprite(`github.com/aokumo21/    :3`, 0, 116)
+        ]
 
-        let CfgProgramTitleText = textsprite.create("Program:", 0, 2)
-        CfgProgramTitleText.setPosition(CfgProgramTitleText.width / 2, 60)
+        // --- System info group ---
+        let CfgRamText = createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 30)
+        let CfgUptimeText = createTextSprite("Uptime: " + control.millis() + "ms", 0, 50)
 
-        let CfgProgramNameText = textsprite.create(control.programName(), 0, 2)
-        CfgProgramNameText.setPosition(CfgProgramNameText.width / 2, 70)
+        let systemInfo = [CfgRamText, CfgUptimeText]
 
-        let CfgProgramVerText = textsprite.create("Ver: " + settings.readString("GAME_ver"), 0, 2)
-        CfgProgramVerText.setPosition(CfgProgramVerText.width / 2, 80)
+        // update uptime every second
+        game.onUpdateInterval(1000, function () {
+            CfgUptimeText.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+        })
 
-        let CfgProgAuthorText = textsprite.create("Author: " + settings.readString("GAME_Author"), 0, 2)
-        CfgProgAuthorText.setPosition(CfgProgAuthorText.width / 2 +1, 90)
+
+        // --- Menu selection toggle logic ---
+        CfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
+            console.log(selection)
+
+            // Hide everything first
+            for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, true)
+            for (let s of systemInfo) s.setFlag(SpriteFlag.Invisible, true)
+
+            // Then only reveal based on tab
+            if (selectedIndex == 0) {            // Software
+                for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, false)
+            } else if (selectedIndex == 1) {     // System
+                for (let s of systemInfo) s.setFlag(SpriteFlag.Invisible, false)
+            }
+        })
+
+
     }
     function INIT_RESET_CFG() {
         console.log("INIT_RESET_CFG")
