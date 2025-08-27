@@ -1,5 +1,5 @@
 {
-    "name": "PreGameEnv",
+    "name": "PreGameLauncher",
     "description": "",
     "dependencies": {
         "device": "*"
