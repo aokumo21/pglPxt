@@ -1,47 +1,44 @@
-function RUN_PREGAME_ENV(GAME_ver: string) {
-    console.log("Check out my github!\n https://github.com/aokumo21/\nEven though there is nothing usefull on there.")
-    console.log("=========================")
-    console.log("====CONSOLE=LOG=START====")
-    console.log("=========================")
-    scene.setBackgroundColor(15)
-    game.consoleOverlay.setVisible(true)
-    pause(50)
-    settings.writeString("PREGAME_ver", "0.0.1")
-    settings.writeString("GAME_ver", GAME_ver)
-    if (settings.readNumber("DoneInitialSetup") == 1) {
-        //FIRST_STARTUP()
-    }
-    console.log("PreGameEnv: " + settings.readString("PREGAME_ver"))
-    pause(150)
-    // Print device info
-    console.log("=========================") 
-    console.log("DAL Ver: " + control.deviceDalVersion())
-    console.log("RAM SIZE (KB): " + control.ramSize() / 1024)
-    console.log("=========================")
-    pause(500)
-    if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-        INIT_RESET_CFG()
-    } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
-        DBG_PRNT_CFG()
-    }
-    console.log("PROGRAM NAME:\n" + control.programName()) //Print programName
-    console.log("PROGRAM VERSION:") //Print programVersion
-    if (settings.readNumber("DEBUG") == 1) {
-        settings.writeString("GAME_ver", settings.readString("GAME_ver") + "-DEBUG")
-    }
-    console.log(settings.readString("GAME_ver") + "\n ")
+namespace PreGameEnv {
+    export function RUN_PREGAME_ENV(GAME_ver: string) {
+        console.log("=========================")
+        console.log("Check out my github!\n https://github.com/aokumo21/\nEven though there is nothing usefull on there.")
+        console.log("=========================")
+        console.log("====CONSOLE=LOG=START====")
+        console.log("=========================")
+        scene.setBackgroundColor(15)
+        game.consoleOverlay.setVisible(true)
+        settings.writeString("PREGAME_ver", "0.0.1")
+        settings.writeString("GAME_ver", GAME_ver)
+        if (settings.readNumber("DoneInitialSetup") != 1) {
+            FIRST_STARTUP()
+        }
+        console.log("PreGameEnv: " + settings.readString("PREGAME_ver"))
+        // Print device info
+        console.log("=========================") 
+        console.log("DAL-Ver: " + control.deviceDalVersion())
+        console.log("RAM-Size (KB): " + control.ramSize() / 1024)
+        console.log("=========================")
+        if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
+            INIT_RESET_CFG()
+        } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
+            DBG_PRNT_CFG()
+        }
+        console.log("Program:\n" + control.programName()) //Print programName
 
-    screen.setBrightness(settings.readNumber("screenBrightness"))
-    console.log("screenBrightness == " + settings.readNumber("screenBrightness"))
+        if (settings.readNumber("DEBUG") == 1) {
+            settings.writeString("GAME_ver", settings.readString("GAME_ver") + "-DEBUG")
+        }
+        console.log("Version: " + settings.readString("GAME_ver")) //Print programVersion
+        console.log("=========================")
+        
+        screen.setBrightness(settings.readNumber("screenBrightness"))
+        music.setVolume((settings.readNumber("speekerVolume")))
 
-    music.setVolume((settings.readNumber("speekerVolume")))
-    console.log("speekerVolume == " + settings.readNumber("speekerVolume"))
-
-    if (settings.readNumber("DBG_DELAYED_STARTUP") == 1) {
-        console.log(" \nDELAYED STARTUP ENABLED")
-        pause(5000)
+        if (settings.readNumber("DBG_DELAYED_STARTUP") == 1) {
+            console.log(" \nDELAYED STARTUP ENABLED")
+            pause(5000)
+        }
     }
-
     function INIT_RESET_CFG() {
         console.log("INIT_RESET_CFG")
         music.play(music.createSoundEffect(WaveShape.Sawtooth, 1000, 1000, 255, 255, 250, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
@@ -71,7 +68,12 @@ function RUN_PREGAME_ENV(GAME_ver: string) {
             game.reset()
         }
     }
-
+    function FIRST_STARTUP() {
+        console.log("FIRST_STARTUP")
+        settings.writeNumber("screenBrightness", screen.brightness())
+        settings.writeNumber("speekerVolume", music.volume())
+        settings.writeNumber("DoneInitialSetup", 1)
+    }
     function DBG_PRNT_CFG() {
         console.log("DBG_PRNT_CFG")
         console.log("=========================")
