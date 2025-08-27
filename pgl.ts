@@ -218,6 +218,23 @@ namespace PGL {
         console.log("FIRST_STARTUP")
         settings.writeNumber("screenBrightness", screen.brightness())
         settings.writeNumber("speekerVolume", music.volume())
+        for (let i = 0; i < pglProgCfg.length; i++) {
+            if (pglProgCfg.get(i).type == "string") {
+                settings.writeString(pglProgCfg.get(i).name, ""+pglProgCfg.get(i).defaultValue)
+                console.log(settings.readString(pglProgCfg.get(i).name))
+
+            } else if (pglProgCfg.get(i).type == "boolean") {
+                if (pglProgCfg.get(i).defaultValue == true) {
+                    settings.writeNumber(pglProgCfg.get(i).name, 1)
+                } else {
+                    settings.writeNumber(pglProgCfg.get(i).name, 0)
+                }
+                console.log(settings.readNumber(pglProgCfg.get(i).name))
+            } else if (pglProgCfg.get(i).type == "number") {
+                settings.writeNumber(pglProgCfg.get(i).name, +pglProgCfg.get(i).defaultValue)
+                console.log(settings.readNumber(pglProgCfg.get(i).name))
+            }
+        }
         settings.writeNumber("DoneInitialSetup", 1)
     }
     function DBG_PRNT_CFG() {
