@@ -85,8 +85,36 @@ namespace PreGameEnv {
         console.log("CFG_SCRN")
         game.pushScene()
         game.consoleOverlay.setVisible(false)
-        scene.setBackgroundColor(3)
+        scene.setBackgroundColor(14)
+        let CfgMainMenu = miniMenu.createMenu(
+            miniMenu.createMenuItem("Info"),
+            miniMenu.createMenuItem("???"),
+            miniMenu.createMenuItem("???"),
+            miniMenu.createMenuItem("DBG"),
+        )
         
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, screen.width+1)
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
+        
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.BorderColor, 14)
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.BackgroundColor, 14)
+
+        CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Background, 14)
+        CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+
+        CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
+        CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
+
+        CfgMainMenu.setPosition(CfgMainMenu.width / 2 -1, CfgMainMenu.height / 2-1)
+
+        let CfgPGEVerText = textsprite.create("PreGameEnv: " + settings.readString("PREGAME_ver"), 0, 2)
+        CfgPGEVerText.setPosition(CfgPGEVerText.width / 2, 50)
+
+        let CfgRamText = textsprite.create("RAM: "+control.ramSize()/1024+"KB", 0, 2)
+        CfgRamText.setPosition(CfgRamText.width / 2, 117)
+        let CfgDALText = textsprite.create("DAL-VER: " + control.deviceDalVersion(), 0, 2)
+        CfgDALText.setPosition(CfgDALText.width / 2, 110)
     }
     function INIT_RESET_CFG() {
         console.log("INIT_RESET_CFG")
