@@ -1,5 +1,5 @@
 namespace PreGameEnv {
-    export function RUN_PREGAME_ENV(GAME_ver: string) {
+    export function RUN_PREGAME_ENV(GAME_ver: string, GAME_Author: string) {
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -46,6 +46,7 @@ namespace PreGameEnv {
         game.consoleOverlay.setVisible(true)
         settings.writeString("PREGAME_ver", "0.0.1")
         settings.writeString("GAME_ver", GAME_ver)
+        settings.writeString("GAME_Author", GAME_Author)
         if (settings.readNumber("DoneInitialSetup") != 1) {
             FIRST_STARTUP()
         }
@@ -57,11 +58,11 @@ namespace PreGameEnv {
         console.log("RAM-Size (KB): " + control.ramSize() / 1024)
         console.log("=========================")
         pause(200)
-        //if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-        //    INIT_RESET_CFG()
-        //} else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
-        //    DBG_PRNT_CFG()
-        //}
+        if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
+            INIT_RESET_CFG()
+        } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
+            DBG_PRNT_CFG()
+        }
         console.log("Program:\n" + control.programName()) //Print programName
 
         if (settings.readNumber("DEBUG") == 1) {
@@ -86,19 +87,23 @@ namespace PreGameEnv {
         game.pushScene()
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
+        //TopBarBackgroundImage
+        let tbbi = image.create(screen.width, 12)
+        tbbi.fill(2)
+        //TopBarBackgroundSprite
+        let tbbs = sprites.create(tbbi, SpriteKind.Player)
+        tbbs.setPosition(tbbs.width / 2, tbbs.height / 2)
+
         let CfgMainMenu = miniMenu.createMenu(
             miniMenu.createMenuItem("Info"),
-            miniMenu.createMenuItem("???"),
-            miniMenu.createMenuItem("???"),
+            miniMenu.createMenuItem("Options"),
+            miniMenu.createMenuItem("CfgEditor"),
             miniMenu.createMenuItem("DBG"),
         )
         
         CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
-        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Width, screen.width+1)
         CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
-        
-        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.BorderColor, 14)
-        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.BackgroundColor, 14)
+        CfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
 
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Background, 14)
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
@@ -106,15 +111,27 @@ namespace PreGameEnv {
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
         CfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
 
-        CfgMainMenu.setPosition(CfgMainMenu.width / 2 -1, CfgMainMenu.height / 2-1)
+        CfgMainMenu.setPosition(CfgMainMenu.width / 2 + 2, CfgMainMenu.height / 2-1)
 
         let CfgPGEVerText = textsprite.create("PreGameEnv: " + settings.readString("PREGAME_ver"), 0, 2)
-        CfgPGEVerText.setPosition(CfgPGEVerText.width / 2, 50)
+        CfgPGEVerText.setPosition(CfgPGEVerText.width / 2, 20)
 
         let CfgRamText = textsprite.create("RAM: "+control.ramSize()/1024+"KB", 0, 2)
-        CfgRamText.setPosition(CfgRamText.width / 2, 117)
+        CfgRamText.setPosition(CfgRamText.width / 2, 30)
         let CfgDALText = textsprite.create("DAL-VER: " + control.deviceDalVersion(), 0, 2)
-        CfgDALText.setPosition(CfgDALText.width / 2, 110)
+        CfgDALText.setPosition(CfgDALText.width / 2, 40)
+
+        let CfgProgramTitleText = textsprite.create("Program:", 0, 2)
+        CfgProgramTitleText.setPosition(CfgProgramTitleText.width / 2, 60)
+
+        let CfgProgramNameText = textsprite.create(control.programName(), 0, 2)
+        CfgProgramNameText.setPosition(CfgProgramNameText.width / 2, 70)
+
+        let CfgProgramVerText = textsprite.create("Ver: " + settings.readString("GAME_ver"), 0, 2)
+        CfgProgramVerText.setPosition(CfgProgramVerText.width / 2, 80)
+
+        let CfgProgAuthorText = textsprite.create("Author: " + settings.readString("GAME_Author"), 0, 2)
+        CfgProgAuthorText.setPosition(CfgProgAuthorText.width / 2 +1, 90)
     }
     function INIT_RESET_CFG() {
         console.log("INIT_RESET_CFG")
