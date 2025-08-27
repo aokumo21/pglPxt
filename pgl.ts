@@ -160,7 +160,7 @@ namespace PGL {
         MENUITM_ConfigList.pop()
         MENUITM_ConfigList = []
         for (let i = 0; i < pglProgCfg.length; i++) {
-            MENUITM_ConfigList.push(miniMenu.createMenuItem("" + pglProgCfg.get(i).name, img``))
+            MENUITM_ConfigList.push(miniMenu.createMenuItem("" + pglProgCfg.get(i).name))
         }
         GUI_ConfigTab = miniMenu.createMenuFromArray(MENUITM_ConfigList)
         GUI_ConfigTab.setButtonEventsEnabled(false)
@@ -183,6 +183,16 @@ namespace PGL {
                 GUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
         })
 
+        CfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
+            if (selectedIndex == 2) {
+                CfgMainMenu.setButtonEventsEnabled(false)
+                GUI_ConfigTab.setButtonEventsEnabled(true)
+            }
+        })
+        GUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            GUI_ConfigTab.setButtonEventsEnabled(false)
+            CfgMainMenu.setButtonEventsEnabled(true)
+        })
 
     }
     function INIT_RESET_CFG() {
