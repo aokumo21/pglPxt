@@ -9,6 +9,7 @@
     },
     "files": [
         "main.ts",
+        "pgl.ts",
         "README.md",
         "assets.json",
         "images.g.jres",
