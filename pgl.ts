@@ -157,8 +157,6 @@ namespace PGL {
         let MENUITM_ConfigList: miniMenu.MenuItem[] = []
         let GUI_ConfigTab: miniMenu.MenuSprite = null
 
-        MENUITM_ConfigList.pop()
-        MENUITM_ConfigList = []
         for (let i = 0; i < pglProgCfg.length; i++) {
             MENUITM_ConfigList.push(miniMenu.createMenuItem("" + pglProgCfg.get(i).name))
         }
@@ -275,8 +273,5 @@ namespace PGL {
             min?: number
             max?: number
         }
-    }
-    function configTab() {
-
     }
 }
