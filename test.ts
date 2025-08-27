@@ -1,22 +1,20 @@
-const userconfig: PGL.ConfigInterface[] = [
+const pglProgCfg: PGL.ConfigInterface[] = [
     {
         name: "testBoolean",
         type: "boolean",
-        value: true,
+        defaultValue: true,
     },
     {
         name: "testNumber",
         type: "number",
-        value: 5,
+        defaultValue: 5,
         limits: { min: 0, max: 10 }, // limits from 0 to 10
     },
     {
         name: "testString",
         type: "string",
-        value: "MISSINGNO.",
+        defaultValue: "MISSINGNO.",
     },
 ];
-
-
 
 PGL.RUN(null, null)

@@ -84,7 +84,6 @@ namespace PGL {
 
     function CFG_SCRN() {
         console.log("CFG_SCRN")
-        game.pushScene()
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
 
@@ -155,23 +154,33 @@ namespace PGL {
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
 
-        // Update uptime every second
-        game.onUpdateInterval(1000, function () {
-            //CfgUptimeText.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
-        })
+        let MENUITM_ConfigList: miniMenu.MenuItem[] = []
+        let GUI_ConfigTab: miniMenu.MenuSprite = null
 
+        MENUITM_ConfigList.pop()
+        MENUITM_ConfigList = []
+        for (let i = 0; i < pglProgCfg.length; i++) {
+            MENUITM_ConfigList.push(miniMenu.createMenuItem("" + pglProgCfg.get(i).name, img``))
+        }
+        GUI_ConfigTab = miniMenu.createMenuFromArray(MENUITM_ConfigList)
+        GUI_ConfigTab.setButtonEventsEnabled(false)
+        GUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
+        GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
+        })
 
         CfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
 
             for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, true)
             for (let s of deviceInfo) s.setFlag(SpriteFlag.Invisible, true)
+            GUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
 
             if (selectedIndex == 0) {  
                 for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, false)
             } else if (selectedIndex == 1) {
                 for (let s of deviceInfo) s.setFlag(SpriteFlag.Invisible, false)
-            }
+            } else if (selectedIndex == 2)
+                GUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
         })
 
 
@@ -221,14 +230,17 @@ namespace PGL {
         }
         pause(5000)
     }
+
     export interface ConfigInterface {
         name: string
         type: "boolean" | "number" | "string"
-        value: boolean | number | string
+        defaultValue: boolean | number | string
         limits?: {
             min?: number
             max?: number
         }
     }
+    function configTab() {
 
+    }
 }
