@@ -38,7 +38,7 @@ namespace PGL {
         controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
         })
         console.log("=========================")
-        console.log("Check out my github!\n https://github.com/aokumo21/ \nEven though there is nothing usefull on there.")
+        console.log("Check out the github repo! https://github.com/aokumo21/PGLpxt/")
         console.log("=========================")
         console.log("====CONSOLE=LOG=START====")
         console.log("=========================")
@@ -57,6 +57,8 @@ namespace PGL {
         console.log("RAM-Size (KB): " + control.ramSize() / 1024)
         console.log("=========================")
         pause(200)
+        
+        //Will be removed later and replaced with the cfg_screen
         if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
             INIT_RESET_CFG()
         } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
@@ -153,7 +155,9 @@ namespace PGL {
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
-
+        /////////////////////////////////////////
+        //CONFIG TAB MENU GENERATION AND CONFIG//
+        /////////////////////////////////////////
         let MENUITM_ConfigList: miniMenu.MenuItem[] = []
         let GUI_ConfigTab: miniMenu.MenuSprite = null
 
@@ -169,7 +173,7 @@ namespace PGL {
         GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
         GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
         })
-
+        //Menu input handler
         CfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
 
