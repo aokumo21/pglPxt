@@ -1,5 +1,42 @@
 namespace PreGameEnv {
     export function RUN_PREGAME_ENV(GAME_ver: string) {
+        // 0 Transparent
+        // 1 White
+        // 2 DarkBlue
+        // 3 Blue
+        // 4 DarkRed
+        // 5 Red
+        // 6 DarkPink
+        // 7 Pink
+        // 8 DarkGreen
+        // 9 Green
+        // 10 DarkCyan
+        // 11 Cyan
+        // 12 DarkYellow
+        // 13 Yellow
+        // 14 Gray
+        // 15 Black
+        //https://lospec.com/palette-list/zx-spectrum-adjusted
+        color.setPalette(color.bufferToPalette(hex`
+        000000
+        ffffff
+        0022c7
+        002bfb
+        d62816
+        ff331c
+        d433c7
+        ff40fc
+        00c525
+        00f92f
+        00c7c9
+        00fbfe
+        ccc82a
+        fffc36
+        cacaca
+        000000`))
+
+        controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+        })
         console.log("=========================")
         console.log("Check out my github!\n https://github.com/aokumo21/\nEven though there is nothing usefull on there.")
         console.log("=========================")
@@ -14,15 +51,17 @@ namespace PreGameEnv {
         }
         console.log("PreGameEnv: " + settings.readString("PREGAME_ver"))
         // Print device info
+        pause(100)
         console.log("=========================") 
         console.log("DAL-Ver: " + control.deviceDalVersion())
         console.log("RAM-Size (KB): " + control.ramSize() / 1024)
         console.log("=========================")
-        if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-            INIT_RESET_CFG()
-        } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
-            DBG_PRNT_CFG()
-        }
+        pause(200)
+        //if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
+        //    INIT_RESET_CFG()
+        //} else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
+        //    DBG_PRNT_CFG()
+        //}
         console.log("Program:\n" + control.programName()) //Print programName
 
         if (settings.readNumber("DEBUG") == 1) {
@@ -30,7 +69,10 @@ namespace PreGameEnv {
         }
         console.log("Version: " + settings.readString("GAME_ver")) //Print programVersion
         console.log("=========================")
-        
+        pause(1000)
+        //if (controller.A.isPressed() && controller.B.isPressed()){
+            CFG_SCRN()
+        //}
         screen.setBrightness(settings.readNumber("screenBrightness"))
         music.setVolume((settings.readNumber("speekerVolume")))
 
@@ -38,6 +80,13 @@ namespace PreGameEnv {
             console.log(" \nDELAYED STARTUP ENABLED")
             pause(5000)
         }
+    }
+    function CFG_SCRN() {
+        console.log("CFG_SCRN")
+        game.pushScene()
+        game.consoleOverlay.setVisible(false)
+        scene.setBackgroundColor(3)
+        
     }
     function INIT_RESET_CFG() {
         console.log("INIT_RESET_CFG")
