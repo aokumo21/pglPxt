@@ -1,1 +1,1 @@
-PreGameEnv.RUN_PREGAME_ENV(null, null)
+PGL.RUN(null, null)
