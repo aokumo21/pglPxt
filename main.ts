@@ -1,4 +1,4 @@
-function RUN_PREGAME_ENV() {
+function RUN_PREGAME_ENV(GAME_ver: string) {
     console.log("Check out my github!\n https://github.com/aokumo21/\nEven though there is nothing usefull on there.")
     console.log("=========================")
     console.log("====CONSOLE=LOG=START====")
@@ -7,6 +7,7 @@ function RUN_PREGAME_ENV() {
     game.consoleOverlay.setVisible(true)
     pause(50)
     settings.writeString("PREGAME_ver", "0.0.1")
+    settings.writeString("GAME_ver", GAME_ver)
     if (settings.readNumber("DoneInitialSetup") == 1) {
         //FIRST_STARTUP()
     }
