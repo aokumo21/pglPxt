@@ -44,13 +44,13 @@ namespace PreGameEnv {
         console.log("=========================")
         scene.setBackgroundColor(15)
         game.consoleOverlay.setVisible(true)
-        settings.writeString("PREGAME_ver", "0.0.1")
+        settings.writeString("PGL_ver", "0.0.1")
         settings.writeString("GAME_ver", GAME_ver)
         settings.writeString("GAME_Author", GAME_Author)
         if (settings.readNumber("DoneInitialSetup") != 1) {
             FIRST_STARTUP()
         }
-        console.log("PreGameEnv: " + settings.readString("PREGAME_ver"))
+        console.log("PreGameLauncher: " + settings.readString("PGL_ver"))
         // Print device info
         pause(100)
         console.log("=========================") 
@@ -87,9 +87,11 @@ namespace PreGameEnv {
         game.pushScene()
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
+
         //TopBarBackgroundImage
         let tbbi = image.create(screen.width, 12)
         tbbi.fill(2)
+
         //TopBarBackgroundSprite
         let tbbs = sprites.create(tbbi, SpriteKind.Player)
         tbbs.setPosition(tbbs.width / 2, tbbs.height / 2)
@@ -98,10 +100,14 @@ namespace PreGameEnv {
             let sprite = textsprite.create(text, 0, 2)
             sprite.setPosition(sprite.width / 2 + x, y)
             sprite.setFlag(SpriteFlag.Invisible, true)
+                if (text== "uptime"){
+                    game.onUpdateInterval(1000, function () {
+                        sprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+                    })
+                }
             return sprite
         }
 
-        // --- Menu setup ---
         let CfgMainMenu = miniMenu.createMenu(
             miniMenu.createMenuItem("Software"),
             miniMenu.createMenuItem("System"),
@@ -122,42 +128,39 @@ namespace PreGameEnv {
         CfgMainMenu.setPosition(CfgMainMenu.width / 2 + 2, CfgMainMenu.height / 2 - 1)
 
 
-        // --- Software info group ---
         let softwareInfo = [
-            createTextSprite("PreGameEnv: " + settings.readString("PREGAME_ver"), 0, 20),
-            createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 30),
-            createTextSprite("Program:", 0, 70),
-            createTextSprite(control.programName(), 0, 80),
-            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 90),
-            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 100),
-            createTextSprite(`github.com/aokumo21/    :3`, 0, 116)
+            createTextSprite("-=Launcher===--------------", 0, 18),
+            createTextSprite("PreGameLauncher: " + settings.readString("PGL_ver"), 0, 30),
+            createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 40),
+            createTextSprite("-=Program===---------------", 0, 78),
+            createTextSprite(control.programName(), 0, 86),
+            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 094),
+            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 102),
+            createTextSprite("---------------------------", 0, 109),
+            createTextSprite(`github.com/aokumo21/   :3`, 0, 116)
         ]
 
-        // --- System info group ---
-        let CfgRamText = createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 30)
-        let CfgUptimeText = createTextSprite("Uptime: " + control.millis() + "ms", 0, 50)
+        let deviceInfo = [
+            createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 20),
+            createTextSprite("uptime", 0, 30)
+        ]
 
-        let systemInfo = [CfgRamText, CfgUptimeText]
-
-        // update uptime every second
+        // Update uptime every second
         game.onUpdateInterval(1000, function () {
-            CfgUptimeText.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+            //CfgUptimeText.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
         })
 
 
-        // --- Menu selection toggle logic ---
         CfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
 
-            // Hide everything first
             for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, true)
-            for (let s of systemInfo) s.setFlag(SpriteFlag.Invisible, true)
+            for (let s of deviceInfo) s.setFlag(SpriteFlag.Invisible, true)
 
-            // Then only reveal based on tab
-            if (selectedIndex == 0) {            // Software
+            if (selectedIndex == 0) {  
                 for (let s of softwareInfo) s.setFlag(SpriteFlag.Invisible, false)
-            } else if (selectedIndex == 1) {     // System
-                for (let s of systemInfo) s.setFlag(SpriteFlag.Invisible, false)
+            } else if (selectedIndex == 1) {
+                for (let s of deviceInfo) s.setFlag(SpriteFlag.Invisible, false)
             }
         })
 
