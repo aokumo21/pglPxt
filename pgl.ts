@@ -166,29 +166,11 @@ namespace PGL {
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
-        /////////////////////////////////////////
-        //CONFIG TAB MENU GENERATION AND CONFIG//
-        /////////////////////////////////////////
-        const _pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
+        //////////////
+        //CONFIG TAB//
+        //////////////
         let _pglGUI_ConfigTab: miniMenu.MenuSprite = null
-
-        for (let i = 0; i < pglProgCfg.length; i++) {
-            if (pglProgCfg.get(i).type == "string") {
-                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name+": "+settings.readString(pglProgCfg.get(i).name)))
-            } else if (pglProgCfg.get(i).type == "number") {
-                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readNumber(pglProgCfg.get(i).name)))
-            } else if (pglProgCfg.get(i).type == "boolean") {
-                switch(settings.readNumber(pglProgCfg.get(i).name)){
-                    case 0:
-                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
-                        break
-                    case 1:
-                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
-                        break
-                }
-            }
-        }
-        _pglGUI_ConfigTab = miniMenu.createMenuFromArray(_pglMENUITM_ConfigList)
+        _pglGUI_ConfigTab = miniMenu.createMenuFromArray(create_pglMENUITM())
         _pglGUI_ConfigTab.setButtonEventsEnabled(false)
         _pglGUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
         _pglGUI_ConfigTab.setDimensions(160, 96)
@@ -200,7 +182,6 @@ namespace PGL {
             const _pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
             const _pglPromptName = pglProgCfg.get(selectedIndex).name
             const _pglOptionType = pglProgCfg.get(selectedIndex).type
-
             if (_pglOptionType == "string") {
                 settings.writeString(_pglPromptName, game.askForString(_pglPromptName, _pglOptionMax|10))
                 console.log(_pglPromptName + ": " + settings.readString(_pglPromptName))
@@ -224,6 +205,8 @@ namespace PGL {
                 settings.writeNumber(_pglPromptName, +game.ask(_pglPromptName))
                 console.log(_pglPromptName + ": " + settings.readNumber(_pglPromptName))
             }
+            _pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
+
         })
 
         //Menu input handler
@@ -312,6 +295,27 @@ namespace PGL {
         settings.writeNumber("DoneInitialSetup", 1)
     }
 
+    function create_pglMENUITM() {
+        let _pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
+        console.log("create_pglMENUITM")
+        for (let i = 0; i < pglProgCfg.length; i++) {
+            if (pglProgCfg.get(i).type == "string") {
+                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readString(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).type == "number") {
+                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readNumber(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).type == "boolean") {
+                switch (settings.readNumber(pglProgCfg.get(i).name)) {
+                    case 0:
+                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
+                        break
+                    case 1:
+                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
+                        break
+                }
+            }
+        }
+        return (_pglMENUITM_ConfigList)
+    }
     export interface ConfigInterface {
         name: string
         type: "boolean" | "number" | "string"
