@@ -177,6 +177,8 @@ namespace PGL {
         _pglGUI_ConfigTab.setPosition(screen.width - _pglGUI_ConfigTab.width / 2 + 0, 60)
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
+
+        let _pglConfigModifed = true
         _pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             const _pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
             const _pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
@@ -206,7 +208,15 @@ namespace PGL {
                 console.log(_pglPromptName + ": " + settings.readNumber(_pglPromptName))
             }
             _pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
-
+            
+        })
+        _pglGUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+            _pglGUI_ConfigTab.setButtonEventsEnabled(false)
+            _pglCfgMainMenu.setButtonEventsEnabled(true)
+            if (_pglConfigModifed){
+                game.splash("NOTICE:                   ", "Restart to apply changes. ") // The large spaces are used to align the text to the left
+            }
         })
 
         //Menu input handler
@@ -234,12 +244,6 @@ namespace PGL {
 
             }
         })
-
-        _pglGUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
-            _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
-            _pglGUI_ConfigTab.setButtonEventsEnabled(false)
-            _pglCfgMainMenu.setButtonEventsEnabled(true)
-            })
     }
 
     function INIT_RESET_CFG() {
