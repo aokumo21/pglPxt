@@ -89,13 +89,13 @@ namespace PGL {
             name: "screenBrightness",
             type: "number",
             defaultValue: 50,
-            limits: { min: 0, max: 100 }, // value does not matter as the boolean can only be true (1) or false (0)
+            limits: { min: 0, max: 100 },
         })
         pglProgCfg.push({
             name: "speekerVolume",
             type: "number",
             defaultValue: 50,
-            limits: { min: 0, max: 255 }, // value does not matter as the boolean can only be true (1) or false (0)
+            limits: { min: 0, max: 255 },
         })
         console.log("CFG_SCRN")
         game.consoleOverlay.setVisible(false)
@@ -148,6 +148,7 @@ namespace PGL {
             createTextSprite("ProgHash: "+ control.programHash(), 0, 58),
             createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 66),
             createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 74),
+            createTextSprite("Press menu to reboot", 20, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
@@ -178,14 +179,14 @@ namespace PGL {
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
 
-        let _pglConfigModifed = true
+        let _pglConfigModifed = false
         _pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             const _pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
             const _pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
             const _pglPromptName = pglProgCfg.get(selectedIndex).name
             const _pglOptionType = pglProgCfg.get(selectedIndex).type
             if (_pglOptionType == "string") {
-                settings.writeString(_pglPromptName, game.askForString(_pglPromptName, _pglOptionMax|10))
+                settings.writeString(_pglPromptName, game.askForString(_pglPromptName, _pglOptionMax > 0 ? _pglOptionMax : 1));
                 console.log(_pglPromptName + ": " + settings.readString(_pglPromptName))
             } else if (_pglOptionType == "number") {
                 if (_pglOptionMax >= -255) {
@@ -208,13 +209,13 @@ namespace PGL {
                 console.log(_pglPromptName + ": " + settings.readNumber(_pglPromptName))
             }
             _pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
-            
+            _pglConfigModifed = true
         })
         _pglGUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
             _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
             _pglGUI_ConfigTab.setButtonEventsEnabled(false)
             _pglCfgMainMenu.setButtonEventsEnabled(true)
-            if (_pglConfigModifed){
+            if (_pglConfigModifed == true){
                 game.splash("NOTICE:                   ", "Restart to apply changes. ") // The large spaces are used to align the text to the left
             }
         })
@@ -241,7 +242,16 @@ namespace PGL {
                 _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
                 _pglCfgMainMenu.setButtonEventsEnabled(false)
                 _pglGUI_ConfigTab.setButtonEventsEnabled(true)
+                _pglConfigModifed = false
 
+            }
+        })
+
+        _pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
+            if (selectedIndex == 0) {
+                if(game.ask("NOTICE", "Press A to reboot.")) {
+                    control.reset()
+                }
             }
         })
     }
@@ -329,4 +339,5 @@ namespace PGL {
             max: number
         }
     }
+    export const pglProgCfg: PGL.ConfigInterface[] = []
 }
