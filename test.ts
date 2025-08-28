@@ -17,6 +17,6 @@ const pglProgCfg: PGL.ConfigInterface[] = [
         defaultValue: "MISSINGNO.",
         limits: { min: 0, max: 10 }, // 10 means the user will ony be able to input 10 characters
     },
-];
+]
 
 PGL.RUN(null, null)
