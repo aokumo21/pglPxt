@@ -171,9 +171,6 @@ namespace PGL {
         /////////////////////////////////////////
         const _pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
         let _pglGUI_ConfigTab: miniMenu.MenuSprite = null
-        sprites.destroyAllSpritesOfKind(SpriteKind.Text)
-        //let _pglGUI_ConfigTab: miniMenu.MenuSprite = null
-        _pglMENUITM_ConfigList.pop()
 
         for (let i = 0; i < pglProgCfg.length; i++) {
             if (pglProgCfg.get(i).type == "string") {
