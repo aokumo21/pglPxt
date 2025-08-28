@@ -199,8 +199,6 @@ namespace PGL {
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
         _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
         _pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
-        })
-        _pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             const _pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
             const _pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
             const _pglPromptName = pglProgCfg.get(selectedIndex).name
