@@ -162,7 +162,20 @@ namespace PGL {
         let GUI_ConfigTab: miniMenu.MenuSprite = null
 
         for (let i = 0; i < pglProgCfg.length; i++) {
-            MENUITM_ConfigList.push(miniMenu.createMenuItem("" + pglProgCfg.get(i).name))
+            if (pglProgCfg.get(i).type == "string") {
+                MENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name+": "+settings.readString(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).type == "number") {
+                MENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readNumber(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).type == "boolean") {
+                switch(settings.readNumber(pglProgCfg.get(i).name)){
+                    case 0:
+                        MENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
+                    break
+                    case 1:
+                        MENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
+                    break
+                }
+            }
         }
         GUI_ConfigTab = miniMenu.createMenuFromArray(MENUITM_ConfigList)
         GUI_ConfigTab.setButtonEventsEnabled(false)
@@ -173,6 +186,26 @@ namespace PGL {
         GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
         GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
         })
+        GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
+            if (pglProgCfg.get(selectedIndex).type == "string") {
+
+                settings.writeString(pglProgCfg.get(selectedIndex).name, game.askForString(pglProgCfg.get(selectedIndex).name, pglProgCfg.get(selectedIndex).maxChars|10))
+
+                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readString(pglProgCfg.get(selectedIndex).name))
+            } else if (pglProgCfg.get(selectedIndex).type == "number") {
+                
+                settings.writeNumber(pglProgCfg.get(selectedIndex).name, game.askForNumber(pglProgCfg.get(selectedIndex).name))
+
+                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readNumber(pglProgCfg.get(selectedIndex).name))
+            }
+            else if (pglProgCfg.get(selectedIndex).type == "boolean") {
+
+                settings.writeNumber(pglProgCfg.get(selectedIndex).name, +game.ask(pglProgCfg.get(selectedIndex).name))
+
+                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readNumber(pglProgCfg.get(selectedIndex).name))
+            }
+        })
+
         //Menu input handler
         CfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
@@ -198,10 +231,11 @@ namespace PGL {
 
             }
         })
+
             GUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
-            GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
-            GUI_ConfigTab.setButtonEventsEnabled(false)
-            CfgMainMenu.setButtonEventsEnabled(true)
+                GUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+                GUI_ConfigTab.setButtonEventsEnabled(false)
+                CfgMainMenu.setButtonEventsEnabled(true)
 
         })
 
@@ -277,5 +311,6 @@ namespace PGL {
             min?: number
             max?: number
         }
+        maxChars?: number
     }
 }

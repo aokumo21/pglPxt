@@ -14,6 +14,7 @@ const pglProgCfg: PGL.ConfigInterface[] = [
         name: "testString",
         type: "string",
         defaultValue: "MISSINGNO.",
+        maxChars: 100,
     },
 ];
 
