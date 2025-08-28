@@ -187,22 +187,35 @@ namespace PGL {
         GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
         })
         GUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
-            if (pglProgCfg.get(selectedIndex).type == "string") {
+            const optionmin = pglProgCfg.get(selectedIndex).limits.min
+            const optionmax = pglProgCfg.get(selectedIndex).limits.max
+            const promptName = pglProgCfg.get(selectedIndex).name
+            const optiontype = pglProgCfg.get(selectedIndex).type
 
-                settings.writeString(pglProgCfg.get(selectedIndex).name, game.askForString(pglProgCfg.get(selectedIndex).name, pglProgCfg.get(selectedIndex).maxChars|10))
+            if (optiontype == "string") {
+                settings.writeString(promptName, game.askForString(promptName, optionmax|10))
+                console.log(promptName + ": " + settings.readString(promptName))
+            } else if (optiontype == "number") {
+                if (optionmax > -255) {
+                    let oor = "Range: ("+ optionmin + " - " + optionmax+") \n"
+                    while (true) {
+                        let value = game.askForNumber(oor+promptName, 10)
+                        if (value > optionmin && value < optionmax) {
+                            console.log("Value in range")
+                            break // exit the loop
+                        } else {
+                            oor = " Input of Range (" + optionmin + "-" + optionmax+")\n"
+                            console.log("Value out of range")
+                        }
+                    }
+                }
 
-                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readString(pglProgCfg.get(selectedIndex).name))
-            } else if (pglProgCfg.get(selectedIndex).type == "number") {
-                
-                settings.writeNumber(pglProgCfg.get(selectedIndex).name, game.askForNumber(pglProgCfg.get(selectedIndex).name))
 
-                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readNumber(pglProgCfg.get(selectedIndex).name))
-            }
-            else if (pglProgCfg.get(selectedIndex).type == "boolean") {
-
-                settings.writeNumber(pglProgCfg.get(selectedIndex).name, +game.ask(pglProgCfg.get(selectedIndex).name))
-
-                console.log(pglProgCfg.get(selectedIndex).name + ": " + settings.readNumber(pglProgCfg.get(selectedIndex).name))
+                //settings.writeNumber(pglProgCfg.get(selectedIndex).name, game.askForNumber(pglProgCfg.get(selectedIndex).name))
+                console.log(promptName + ": " + settings.readNumber(promptName))
+            } else if (optiontype == "boolean") {
+                settings.writeNumber(promptName, +game.ask(promptName))
+                console.log(promptName + ": " + settings.readNumber(promptName))
             }
         })
 
@@ -307,10 +320,9 @@ namespace PGL {
         name: string
         type: "boolean" | "number" | "string"
         defaultValue: boolean | number | string
-        limits?: {
-            min?: number
-            max?: number
+        limits: {
+            min: number
+            max: number
         }
-        maxChars?: number
     }
 }
