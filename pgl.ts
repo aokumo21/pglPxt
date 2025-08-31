@@ -1,8 +1,10 @@
 /**
  * Provides block to funcitons in the preGameLauncher extention
  */
-//% color=190 weight=100 icon="\uf120" block="preGameLauncher"
+//% color=190 weight=0 icon="\uf120" block="preGameLauncher"
+
 namespace preGameLauncher {
+    export const pglDebugEnabled = (settings.readNumber("pglDebug") == 1 || false)
     export const preGameLauncherVer = "0.0.1"
     
     /**
@@ -15,6 +17,8 @@ namespace preGameLauncher {
     //% group="Run"
     //% weight=100
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
+        gameVer = settings.readString("dbgVer") || gameVer
+        gameAuthor = settings.readString("dbgAuthor") || gameAuthor
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -58,6 +62,7 @@ namespace preGameLauncher {
         console.log("=========================")
         scene.setBackgroundColor(15)
         game.consoleOverlay.setVisible(true)
+        if (pglTestMode == true) { console.log("-===RUNNING-IN-EDITOR===-") }
         settings.writeString("gameVer", gameVer || "msgnotfound")
         settings.writeString("gameAuthor", gameAuthor || "msgnotfound")
         if (settings.readNumber("DoneInitialSetup") != 1) {
@@ -80,10 +85,11 @@ namespace preGameLauncher {
         }
         console.log("Program:\n" + control.programName()) //Print programName
 
-        if (settings.readNumber("pglDebug") == 1) {
+        if (pglDebugEnabled == true) {
             settings.writeString("gameVer", settings.readString("gameVer") + "-DBG")
         }
         console.log("Version: " + settings.readString("gameVer")) //Print programVersion
+        console.log("Author: " + settings.readString("gameAuthor")) //Print programVersion
         console.log("=========================")
         pause(1000)
         if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig==true)){
@@ -138,7 +144,7 @@ namespace preGameLauncher {
             miniMenu.createMenuItem("System"),
             miniMenu.createMenuItem("Config"),
         )
-        if(settings.readNumber("pglDebug") == 1) {
+        if (pglDebugEnabled == true) {
             pglCfgMainMenu.items.push(miniMenu.createMenuItem("Dbg"))
         }
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
@@ -160,12 +166,15 @@ namespace preGameLauncher {
             createTextSprite("-=Program===---------------", 0, 42,),
             createTextSprite(control.programName(), 0, 50),
             createTextSprite("ProgHash: "+ control.programHash(), 0, 58),
-            createTextSprite("Ver: " + settings.readString("gameVer"), 0, 66),
+            createTextSprite("Version: " + settings.readString("gameVer"), 0, 66),
             createTextSprite("Author: " + settings.readString("gameAuthor"), 1, 74),
             createTextSprite("Press menu to reboot", 20, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
+        if (typeof pglTestMode != undefined) {
+            pglSoftwareInfo.insertAt(8, createTextSprite("--===RUNNING-IN-EDITOR===--", 0, 88),)
+        }
 
         const pglDeviceInfo = [
             createTextSprite("-=Hardware===--------------", 0, 18),

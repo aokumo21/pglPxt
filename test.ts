@@ -1,19 +1,20 @@
+const pglTestMode = true
 preGameLauncher.setConfig(
     preGameLauncher.createConfig(
-        "testString",
-        "hewo. Im a test string :3",
+        "dbgVer",
+        "dev",
         0,
         10
     ),
     preGameLauncher.createConfig(
-        "testNumber",
-        6,
+        "dbgAuthor",
+        "aokumo",
         5,
         15
     ),
     preGameLauncher.createConfig(
-        "testBoolean",
-        true,
+        "pglDebug",
+        false,
         0,
         0
     )
