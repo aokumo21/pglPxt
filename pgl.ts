@@ -137,9 +137,10 @@ namespace preGameLauncher {
             miniMenu.createMenuItem("Software"),
             miniMenu.createMenuItem("System"),
             miniMenu.createMenuItem("Config"),
-            miniMenu.createMenuItem("Dbg"),
         )
-
+        if(settings.readNumber("pglDebug") == 1) {
+            pglCfgMainMenu.items.push(miniMenu.createMenuItem("Dbg"))
+        }
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
@@ -150,7 +151,7 @@ namespace preGameLauncher {
         pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
         pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
 
-        pglCfgMainMenu.setPosition(pglCfgMainMenu.width / 2 + 2, pglCfgMainMenu.height / 2 - 1)
+        pglCfgMainMenu.setPosition((screen.width/2), 10)
 
         const pglSoftwareInfo = [
             createTextSprite("-=Launcher===--------------", 0, 18),
@@ -163,7 +164,7 @@ namespace preGameLauncher {
             createTextSprite("Author: " + settings.readString("gameAuthor"), 1, 74),
             createTextSprite("Press menu to reboot", 20, 102),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
+            createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
 
         const pglDeviceInfo = [
