@@ -1,9 +1,19 @@
 {
     "compilerOptions": {
-        "target": "ES5",
-        "noImplicitAny": true,
-        "outDir": "built",
-        "rootDir": "."
+    "target": "ES5",
+    "noImplicitAny": true,
+    "outDir": "built",
+    "rootDirs": [
+                    ".",                   // Your local project folder
+                    "../../pxt"            // External sources folder
+                ],
     },
-    "exclude": ["pxt_modules/**/*test.ts"]
+    "exclude": ["pxt_modules/**/*test.ts"],
+    "include": [
+        "./*.ts",
+        "../pxt/pxt_modules/*/*.ts",
+        "../pxt/arcade-mini-menu/*.ts",
+        "../pxt/pxt-color/*.ts",
+        "../pxt/arcade-text/*.ts"
+    ]
 }
