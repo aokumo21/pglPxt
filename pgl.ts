@@ -2,13 +2,17 @@
  * Provides block to funcitons in the preGameLauncher extention
  */
 //% color=190 weight=100 icon="\uf1ec" block="preGameLauncher"
-namespace PGL {
-    export const PGL_ver = "0.0.1"
+namespace preGameLauncher {
+    export const preGameLauncherVer = "0.0.1"
     
+    /**
+     * This runs the preGameLauncher. Place this at the start of the on start block.
+     * @param interval speed of scroll
+    */
     //% block
-    //% blockId=device_show_number
-    //% block="show|number $v"
-    export function RUN(GAME_ver: string, GAME_Author: string, BootToConfig?: boolean) {
+    //% blockId=runPreGameLauncher
+    //% block="run|preGameLauncher| gameVersion: $gameVer|gameAuthor: $gameAuthor|bootToConfig %bootToConfig"
+    export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -52,14 +56,14 @@ namespace PGL {
         console.log("=========================")
         scene.setBackgroundColor(15)
         game.consoleOverlay.setVisible(true)
-        settings.writeString("GAME_ver", GAME_ver)
-        settings.writeString("GAME_Author", GAME_Author)
+        settings.writeString("gameVer", gameVer || "msgnotfound")
+        settings.writeString("gameAuthor", gameAuthor || "msgnotfound")
         if (settings.readNumber("DoneInitialSetup") != 1) {
             FIRST_STARTUP()
         }
         screen.setBrightness(settings.readNumber("screenBrightness"))
         music.setVolume(settings.readNumber("speekerVolume"))
-        console.log("PreGameLauncher: " + PGL_ver)
+        console.log("PreGameLauncher: " + preGameLauncherVer)
         // Print device info
         pause(100)
         console.log("=========================") 
@@ -74,13 +78,13 @@ namespace PGL {
         }
         console.log("Program:\n" + control.programName()) //Print programName
 
-        if (settings.readNumber("DEBUG") == 1) {
-            settings.writeString("GAME_ver", settings.readString("GAME_ver") + "-DEBUG")
+        if (settings.readNumber("pglDebug") == 1) {
+            settings.writeString("gameVer", settings.readString("gameVer") + "-DBG")
         }
-        console.log("Version: " + settings.readString("GAME_ver")) //Print programVersion
+        console.log("Version: " + settings.readString("gameVer")) //Print programVersion
         console.log("=========================")
         pause(1000)
-        if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (BootToConfig==true)){
+        if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig==true)){
             CFG_SCRN()
         }
         screen.setBrightness(settings.readNumber("screenBrightness"))
@@ -148,13 +152,13 @@ namespace PGL {
 
         const _pglSoftwareInfo = [
             createTextSprite("-=Launcher===--------------", 0, 18),
-            createTextSprite("PreGameLauncher: " + PGL_ver, 0, 26),
+            createTextSprite("PreGameLauncher: " + preGameLauncherVer, 0, 26),
             createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 34),
             createTextSprite("-=Program===---------------", 0, 42,),
             createTextSprite(control.programName(), 0, 50),
             createTextSprite("ProgHash: "+ control.programHash(), 0, 58),
-            createTextSprite("Ver: " + settings.readString("GAME_ver"), 0, 66),
-            createTextSprite("Author: " + settings.readString("GAME_Author"), 1, 74),
+            createTextSprite("Ver: " + settings.readString("gameVer"), 0, 66),
+            createTextSprite("Author: " + settings.readString("gameAuthor"), 1, 74),
             createTextSprite("Press menu to reboot", 20, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
@@ -346,5 +350,12 @@ namespace PGL {
             max: number
         }
     }
-    export const pglProgCfg: PGL.ConfigInterface[] = []
+    const pglProgCfg: preGameLauncher.ConfigInterface[] = []
+    //% block="add configs to program config"
+    export function addConfigs(configs: preGameLauncher.ConfigInterface[]): void {
+        for (let i = 0; i < configs.length; i++) {
+            pglProgCfg.push(configs[i]);
+        }
+    }
+
 }
