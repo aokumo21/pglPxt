@@ -10,7 +10,7 @@ namespace preGameLauncher {
      * @param interval speed of scroll
     */
     //% block
-    //% blockId=runPreGameLauncher
+    //% blockId=run_pre_game_launcher
     //% block="run|preGameLauncher| gameVersion: $gameVer|gameAuthor: $gameAuthor|bootToConfig %bootToConfig"
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
         // 0 Transparent
@@ -98,13 +98,13 @@ namespace preGameLauncher {
     function CFG_SCRN() {
         pglProgCfg.push({
             name: "screenBrightness",
-            type: "number",
+            cfgtype: "number",
             defaultValue: 50,
             limits: { min: 0, max: 100 },
         })
         pglProgCfg.push({
             name: "speekerVolume",
-            type: "number",
+            cfgtype: "number",
             defaultValue: 50,
             limits: { min: 0, max: 255 },
         })
@@ -112,45 +112,45 @@ namespace preGameLauncher {
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
         //TopBarBackgroundImage
-        const _pglTbbi = image.create(screen.width, 12)
-        _pglTbbi.fill(2)
+        const pglTbbi = image.create(screen.width, 12)
+        pglTbbi.fill(2)
 
         //TopBarBackgroundSprite
-        const _pglTbbs = sprites.create(_pglTbbi, SpriteKind.Player)
-        _pglTbbs.setPosition(_pglTbbs.width / 2, _pglTbbs.height / 2)
+        const pglTbbs = sprites.create(pglTbbi, SpriteKind.Player)
+        pglTbbs.setPosition(pglTbbs.width / 2, pglTbbs.height / 2)
 
         function createTextSprite(text: string, x: number, y: number){
-            const _pglTextSprite = textsprite.create(text, 0, 2)
-            _pglTextSprite.setPosition(_pglTextSprite.width / 2 + x, y)
-            _pglTextSprite.setFlag(SpriteFlag.Invisible, true)
+            const pglTextSprite = textsprite.create(text, 0, 2)
+            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            pglTextSprite.setFlag(SpriteFlag.Invisible, true)
                 if (text== "uptime"){
                     game.onUpdateInterval(1000, function () {
-                        _pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+                        pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
                     })
                 }
-            return _pglTextSprite
+            return pglTextSprite
         }
 
-        const _pglCfgMainMenu = miniMenu.createMenu(
+        const pglCfgMainMenu = miniMenu.createMenu(
             miniMenu.createMenuItem("Software"),
             miniMenu.createMenuItem("System"),
             miniMenu.createMenuItem("Config"),
             miniMenu.createMenuItem("Dbg"),
         )
 
-        _pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
-        _pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
-        _pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
+        pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
+        pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
+        pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
 
-        _pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Background, 14)
-        _pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+        pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Background, 14)
+        pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
 
-        _pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
-        _pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
+        pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
+        pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
 
-        _pglCfgMainMenu.setPosition(_pglCfgMainMenu.width / 2 + 2, _pglCfgMainMenu.height / 2 - 1)
+        pglCfgMainMenu.setPosition(pglCfgMainMenu.width / 2 + 2, pglCfgMainMenu.height / 2 - 1)
 
-        const _pglSoftwareInfo = [
+        const pglSoftwareInfo = [
             createTextSprite("-=Launcher===--------------", 0, 18),
             createTextSprite("PreGameLauncher: " + preGameLauncherVer, 0, 26),
             createTextSprite("DAL-VER: " + control.deviceDalVersion(), 0, 34),
@@ -164,7 +164,7 @@ namespace preGameLauncher {
             createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
         ]
 
-        const _pglDeviceInfo = [
+        const pglDeviceInfo = [
             createTextSprite("-=Hardware===--------------", 0, 18),
             createTextSprite("RAM: " + control.ramSize() / 1024 + "KB", 0, 26),
             createTextSprite("Resolution: " + screen.width + "x" + screen.height, 0, 34),
@@ -181,84 +181,82 @@ namespace preGameLauncher {
         //////////////
         //CONFIG TAB//
         //////////////
-        let _pglGUI_ConfigTab: miniMenu.MenuSprite = null
-        _pglGUI_ConfigTab = miniMenu.createMenuFromArray(create_pglMENUITM())
-        _pglGUI_ConfigTab.setButtonEventsEnabled(false)
-        _pglGUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
-        _pglGUI_ConfigTab.setDimensions(160, 96)
-        _pglGUI_ConfigTab.setPosition(screen.width - _pglGUI_ConfigTab.width / 2 + 0, 60)
-        _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
-        _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
+        let pglGUI_ConfigTab: miniMenu.MenuSprite = null
+        pglGUI_ConfigTab = miniMenu.createMenuFromArray(create_pglMENUITM())
+        pglGUI_ConfigTab.setButtonEventsEnabled(false)
+        pglGUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
+        pglGUI_ConfigTab.setDimensions(160, 96)
+        pglGUI_ConfigTab.setPosition(screen.width - pglGUI_ConfigTab.width / 2 + 0, 60)
+        pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
+        pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
 
-        let _pglConfigModifed = false
-        _pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
-            const _pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
-            const _pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
-            const _pglPromptName = pglProgCfg.get(selectedIndex).name
-            const _pglOptionType = pglProgCfg.get(selectedIndex).type
-            if (_pglOptionType == "string") {
-                settings.writeString(_pglPromptName, game.askForString(_pglPromptName, _pglOptionMax > 0 ? _pglOptionMax : 1));
-                console.log(_pglPromptName + ": " + settings.readString(_pglPromptName))
-            } else if (_pglOptionType == "number") {
-                if (_pglOptionMax >= -255) {
-                    let _pgloor = "Range: (" + _pglOptionMin + " - " + _pglOptionMax+") \n"
-                       while (true) {
-                        let value = game.askForNumber(_pgloor + _pglPromptName, 10)
-                        if (value >= _pglOptionMin && value <= _pglOptionMax) {
-                            console.log("Value in range")
-                            settings.writeNumber(_pglPromptName, value)
-                            break
-                        } else {
-                            _pgloor = " Input of Range (" + _pglOptionMin + "-" + _pglOptionMax+")\n"
-                            console.log("Value out of range")
-                        }
+        let pglConfigModifed = false
+        pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
+            const pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
+            const pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
+            const pglPromptName = pglProgCfg.get(selectedIndex).name
+            const pglOptionType = pglProgCfg.get(selectedIndex).cfgtype
+            if (pglOptionType == "string") {
+                settings.writeString(pglPromptName, game.askForString(pglPromptName, pglOptionMax > 0 ? pglOptionMax : 1))
+                console.log(pglPromptName + ": " + settings.readString(pglPromptName))
+            } else if (pglOptionType == "number") {
+                let pgloor = "Range: (" + pglOptionMin + " - " + pglOptionMax+") \n"
+                    while (true) {
+                    let value = game.askForNumber(pgloor + pglPromptName, 10)
+                    if (value >= pglOptionMin && value <= pglOptionMax) {
+                        console.log("Value in range")
+                        settings.writeNumber(pglPromptName, value)
+                        break
+                    } else {
+                        pgloor = " Input of Range (" + pglOptionMin + "-" + pglOptionMax+")\n"
+                        console.log("Value out of range")
                     }
                 }
-                console.log(_pglPromptName + ": " + settings.readNumber(_pglPromptName))
-            } else if (_pglOptionType == "boolean") {
-                settings.writeNumber(_pglPromptName, +game.ask(_pglPromptName))
-                console.log(_pglPromptName + ": " + settings.readNumber(_pglPromptName))
+                console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
+            } else if (pglOptionType == "boolean") {
+                settings.writeNumber(pglPromptName, +game.ask(pglPromptName))
+                console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
             }
-            _pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
-            _pglConfigModifed = true
+            pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
+            pglConfigModifed = true
         })
-        _pglGUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
-            _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
-            _pglGUI_ConfigTab.setButtonEventsEnabled(false)
-            _pglCfgMainMenu.setButtonEventsEnabled(true)
-            if (_pglConfigModifed == true){
+        pglGUI_ConfigTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+            pglGUI_ConfigTab.setButtonEventsEnabled(false)
+            pglCfgMainMenu.setButtonEventsEnabled(true)
+            if (pglConfigModifed == true){
                 game.splash("NOTICE:                   ", "Restart to apply changes. ") // The large spaces are used to align the text to the left
             }
         })
 
         //Menu input handler
-        _pglCfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
+        pglCfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
 
-            for (let s of _pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, true)
-            for (let s of _pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, true)
-            _pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
+            for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, true)
+            for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, true)
+            pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
 
             if (selectedIndex == 0) {  
-                for (let s of _pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, false)
+                for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, false)
             } else if (selectedIndex == 1) {
-                for (let s of _pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, false)
+                for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, false)
             } else if (selectedIndex == 2) {
-                _pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
+                pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
                 }
         })
 
-        _pglCfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
+        pglCfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
             if (selectedIndex == 2) {
-                _pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
-                _pglCfgMainMenu.setButtonEventsEnabled(false)
-                _pglGUI_ConfigTab.setButtonEventsEnabled(true)
-                _pglConfigModifed = false
+                pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
+                pglCfgMainMenu.setButtonEventsEnabled(false)
+                pglGUI_ConfigTab.setButtonEventsEnabled(true)
+                pglConfigModifed = false
 
             }
         })
 
-        _pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
+        pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
             if (selectedIndex == 0) {
                 if(game.ask("NOTICE", "Press A to reboot.")) {
                     control.reset()
@@ -301,18 +299,18 @@ namespace preGameLauncher {
         settings.writeNumber("screenBrightness", screen.brightness())
         settings.writeNumber("speekerVolume", music.volume())
         for (let i = 0; i < pglProgCfg.length; i++) {
-            if (pglProgCfg.get(i).type == "string") {
+            if (pglProgCfg.get(i).cfgtype == "string") {
                 settings.writeString(pglProgCfg.get(i).name, ""+pglProgCfg.get(i).defaultValue)
                 console.log(settings.readString(pglProgCfg.get(i).name))
 
-            } else if (pglProgCfg.get(i).type == "boolean") {
+            } else if (pglProgCfg.get(i).cfgtype == "boolean") {
                 if (pglProgCfg.get(i).defaultValue == true) {
                     settings.writeNumber(pglProgCfg.get(i).name, 1)
                 } else {
                     settings.writeNumber(pglProgCfg.get(i).name, 0)
                 }
                 console.log(settings.readNumber(pglProgCfg.get(i).name))
-            } else if (pglProgCfg.get(i).type == "number") {
+            } else if (pglProgCfg.get(i).cfgtype == "number") {
                 settings.writeNumber(pglProgCfg.get(i).name, +pglProgCfg.get(i).defaultValue)
                 console.log(settings.readNumber(pglProgCfg.get(i).name))
             }
@@ -321,41 +319,141 @@ namespace preGameLauncher {
     }
 
     function create_pglMENUITM() {
-        let _pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
+        let pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
         console.log("create_pglMENUITM")
         for (let i = 0; i < pglProgCfg.length; i++) {
-            if (pglProgCfg.get(i).type == "string") {
-                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readString(pglProgCfg.get(i).name)))
-            } else if (pglProgCfg.get(i).type == "number") {
-                _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readNumber(pglProgCfg.get(i).name)))
-            } else if (pglProgCfg.get(i).type == "boolean") {
+            if (pglProgCfg.get(i).cfgtype == "string") {
+                pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readString(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).cfgtype == "number") {
+                pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + settings.readNumber(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).cfgtype == "boolean") {
                 switch (settings.readNumber(pglProgCfg.get(i).name)) {
                     case 0:
-                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
                         break
                     case 1:
-                        _pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
                         break
                 }
             }
         }
-        return (_pglMENUITM_ConfigList)
+        return (pglMENUITM_ConfigList)
     }
+    const pglProgCfg: ConfigInterface[] = []
+
     export interface ConfigInterface {
         name: string
-        type: "boolean" | "number" | "string"
+        cfgtype: ConfigType
         defaultValue: boolean | number | string
         limits: {
             min: number
             max: number
         }
     }
-    const pglProgCfg: preGameLauncher.ConfigInterface[] = []
-    //% block="add configs to program config"
-    export function addConfigs(configs: preGameLauncher.ConfigInterface[]): void {
-        for (let i = 0; i < configs.length; i++) {
-            pglProgCfg.push(configs[i]);
+
+    type ConfigType = "boolean" | "number" | "string"
+
+    //% blockId=create_configeration
+    //% block="Configuration|cfgName %name|defaultValue %defaultValue|minValue %min|maxValue %max"
+    //% group="Create"
+    //% weight=90
+    export function createConfig(
+        name: string,
+        defaultValue: boolean | number | string,
+        min: number,
+        max: number
+    ): ConfigInterface {
+        let cfgtype: ConfigType
+        console.log(name)
+        console.log(defaultValue)
+        console.log(min)
+        console.log(max)
+        if (defaultValue === undefined || defaultValue === ""){
+            defaultValue = "MISSINGNO."
+            cfgtype = "string"
+        } else if (typeof defaultValue === "number") {
+            cfgtype = "number"
+        } else if (typeof defaultValue === "boolean") {
+            cfgtype = "boolean"
+        } else {
+            cfgtype = "string"
+        }
+        return {
+            name,
+            cfgtype,
+            defaultValue,
+            limits: { min, max }
         }
     }
+    // "Borrowed" most of this code from the mini menu extention. So credits to riknoll.
+    // https://github.com/riknoll/arcade-mini-menu
 
+    /**
+     * Sets the config used in the config tab in the pgl menu.
+     */
+    //% blockId=set_configeration
+    //% block="create menu sprite|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
+    //% blockSetVariable=setConfig
+    //% cfgitem1.shadow=create_configeration
+    //% cfgitem2.shadow=create_configeration
+    //% cfgitem3.shadow=create_configeration
+    //% cfgitem4.shadow=create_configeration
+    //% cfgitem5.shadow=create_configeration
+    //% cfgitem6.shadow=create_configeration
+    //% cfgitem7.shadow=create_configeration
+    //% cfgitem8.shadow=create_configeration
+    //% cfgitem9.shadow=create_configeration
+    //% cfgitem10.shadow=create_configeration
+    //% cfgitem11.shadow=create_configeration
+    //% cfgitem12.shadow=create_configeration
+    //% cfgitem13.shadow=create_configeration
+    //% cfgitem14.shadow=create_configeration
+    //% cfgitem15.shadow=create_configeration
+    //% cfgitem16.shadow=create_configeration
+    //% group="Config"
+    //% weight=100
+    export function setConfig(
+        cfgitem1: ConfigInterface,
+        cfgitem2?: ConfigInterface,
+        cfgitem3?: ConfigInterface,
+        cfgitem4?: ConfigInterface,
+        cfgitem5?: ConfigInterface,
+        cfgitem6?: ConfigInterface,
+        cfgitem7?: ConfigInterface,
+        cfgitem8?: ConfigInterface,
+        cfgitem9?: ConfigInterface,
+        cfgitem10?: ConfigInterface,
+        cfgitem11?: ConfigInterface,
+        cfgitem12?: ConfigInterface,
+        cfgitem13?: ConfigInterface,
+        cfgitem14?: ConfigInterface,
+        cfgitem15?: ConfigInterface,
+        cfgitem16?: ConfigInterface,
+    ) {
+        const a = [
+            cfgitem1,
+            cfgitem2,
+            cfgitem3,
+            cfgitem4,
+            cfgitem5,
+            cfgitem6,
+            cfgitem7,
+            cfgitem8,
+            cfgitem9,
+            cfgitem10,
+            cfgitem11,
+            cfgitem12,
+            cfgitem13,
+            cfgitem14,
+            cfgitem15,
+            cfgitem16,
+        ]
+        for (let i = 0; Infinity; i++) {
+            if (a[i] === undefined) {
+                break
+            }
+            pglProgCfg.push(a[i])
+        }
+        return "hewo :3"
+    }
 }
