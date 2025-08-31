@@ -1,7 +1,7 @@
 /**
  * Provides block to funcitons in the preGameLauncher extention
  */
-//% color=190 weight=100 icon="\uf1ec" block="preGameLauncher"
+//% color=190 weight=100 icon="\uf120" block="preGameLauncher"
 namespace preGameLauncher {
     export const preGameLauncherVer = "0.0.1"
     
@@ -12,6 +12,8 @@ namespace preGameLauncher {
     //% block
     //% blockId=run_pre_game_launcher
     //% block="run|preGameLauncher| gameVersion: $gameVer|gameAuthor: $gameAuthor|bootToConfig %bootToConfig"
+    //% group="Run"
+    //% weight=100
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
         // 0 Transparent
         // 1 White
@@ -355,8 +357,11 @@ namespace preGameLauncher {
 
     //% blockId=create_configeration
     //% block="Configuration|cfgName %name|defaultValue %defaultValue|minValue %min|maxValue %max"
-    //% group="Create"
+    //% group="Config"
     //% weight=90
+    //% name.defl="name"
+    //% min.defl="0"
+    //% max.defl="1"
     export function createConfig(
         name: string,
         defaultValue: boolean | number | string,
