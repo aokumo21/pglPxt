@@ -4,7 +4,10 @@
 //% color=190 weight=100 icon="\uf1ec" block="preGameLauncher"
 namespace PGL {
     export const PGL_ver = "0.0.1"
-
+    
+    //% block
+    //% blockId=device_show_number
+    //% block="show|number $v"
     export function RUN(GAME_ver: string, GAME_Author: string, BootToConfig?: boolean) {
         // 0 Transparent
         // 1 White
