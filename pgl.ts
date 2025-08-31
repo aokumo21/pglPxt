@@ -176,7 +176,7 @@ namespace preGameLauncher {
             createTextSprite("Volume: " + music.volume(), 0, 82),
             createTextSprite("uptime", 0, 90),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/PGLpxt`, 2, 116)
+            createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
         //////////////
         //CONFIG TAB//
