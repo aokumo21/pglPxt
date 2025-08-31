@@ -10,7 +10,6 @@
     "files": [
         "main.ts",
         "pgl.ts",
-        "globals.d.ts",
         "README.md",
         "assets.json",
         "images.g.jres",
