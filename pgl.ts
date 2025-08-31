@@ -1,3 +1,7 @@
+/**
+ * Provides block to funcitons in the preGameLauncher extention
+ */
+//% color=190 weight=100 icon="\uf1ec" block="preGameLauncher"
 namespace PGL {
     export const PGL_ver = "0.0.1"
 
