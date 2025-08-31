@@ -1,6 +1,7 @@
 namespace PGL {
     export const PGL_ver = "0.0.1"
-    export function RUN(GAME_ver: string, GAME_Author: string) {
+
+    export function RUN(GAME_ver: string, GAME_Author: string, BootToConfig?: boolean) {
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -63,7 +64,6 @@ namespace PGL {
         //Will be removed later and replaced with the cfg_screen
         if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
             INIT_RESET_CFG()
-        } else if (controller.A.isPressed() && (controller.B.isPressed() && controller.down.isPressed())) {
         }
         console.log("Program:\n" + control.programName()) //Print programName
 

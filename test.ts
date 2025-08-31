@@ -18,4 +18,4 @@ PGL.pglProgCfg.push({
     })
 
 
-PGL.RUN(null, null)
+PGL.RUN(null, null, true)
