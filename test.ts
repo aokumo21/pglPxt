@@ -1,4 +1,3 @@
-const pglTestMode = true
 preGameLauncher.setConfig(
     preGameLauncher.createConfig(
         "dbgVer",
