@@ -73,7 +73,7 @@ namespace PGL {
         console.log("Version: " + settings.readString("GAME_ver")) //Print programVersion
         console.log("=========================")
         pause(1000)
-        if (controller.A.isPressed() && controller.B.isPressed()){
+        if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (BootToConfig==true)){
             CFG_SCRN()
         }
         screen.setBrightness(settings.readNumber("screenBrightness"))

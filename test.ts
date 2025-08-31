@@ -16,6 +16,4 @@ PGL.pglProgCfg.push({
         defaultValue: "MISSINGNO.",
         limits: { min: 0, max: 0 }, // 0 means the user will ony be able to input 1 character
     })
-
-
 PGL.RUN(null, null, true)
