@@ -300,7 +300,7 @@ namespace preGameLauncher {
         })
         pglGUI_DebugTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             if (selectedIndex == 0) {  
-
+                if (pglAsk("DISABLE DEBUG?", "THE DEVICE WILL RESTART.")) { settings.clear(); game.reset() }
             } else if (selectedIndex == 1) {
 
             } else if (selectedIndex == 2) {
