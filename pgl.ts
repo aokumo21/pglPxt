@@ -296,29 +296,7 @@ namespace preGameLauncher {
                 }
         })
     }
-    function setupMiniMenu(menu: miniMenu.MenuSprite) {
-        menu.setButtonEventsEnabled(false)
-        menu.setFlag(SpriteFlag.RelativeToCamera, true)
-        menu.setDimensions(160, 96)
-        menu.setPosition(screen.width - menu.width / 2 + 0, 60)
-        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
-        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
-    }
-    function pglAsk(title: string, subtitle?: string) {
-        game.pushScene()
-        color.setColor(7, 0xffffff)
-        color.setColor(6, 0xffffff)
-        scene.setBackgroundColor(2)
-        pause(1)
-        if (game.ask(title, subtitle)) {
-            color.setPalette(color.bufferToPalette(pglColourPalette))
-            game.popScene()
-            return true
-        } 
-        color.setPalette(color.bufferToPalette(pglColourPalette))
-        game.popScene()
-        return false
-    }
+
     function FIRST_STARTUP() {
         console.log("FIRST_STARTUP")
         settings.writeNumber("screenBrightness", screen.brightness())
@@ -483,5 +461,30 @@ namespace preGameLauncher {
             pglProgCfg.push(a[i])
         }
         return "hewo :3"
+    }
+    
+        function setupMiniMenu(menu: miniMenu.MenuSprite) {
+        menu.setButtonEventsEnabled(false)
+        menu.setFlag(SpriteFlag.RelativeToCamera, true)
+        menu.setDimensions(160, 96)
+        menu.setPosition(screen.width - menu.width / 2 + 0, 60)
+        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
+        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
+    }
+    
+    function pglAsk(title: string, subtitle?: string) {
+        game.pushScene()
+        color.setColor(7, 0xffffff)
+        color.setColor(6, 0xffffff)
+        scene.setBackgroundColor(2)
+        pause(1)
+        if (game.ask(title, subtitle)) {
+            color.setPalette(color.bufferToPalette(pglColourPalette))
+            game.popScene()
+            return true
+        } 
+        color.setPalette(color.bufferToPalette(pglColourPalette))
+        game.popScene()
+        return false
     }
 }
