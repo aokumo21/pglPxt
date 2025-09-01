@@ -63,8 +63,6 @@ namespace preGameLauncher {
         console.log("=========================")
         scene.setBackgroundColor(15)
         game.consoleOverlay.setVisible(true)
-
-        //if (pglTestMode == true) { console.log("-===RUNNING-IN-EDITOR===-") }
         
         settings.writeString("gameVer", gameVer || "msgnotfound")
         settings.writeString("gameAuthor", gameAuthor || "msgnotfound")
@@ -175,9 +173,6 @@ namespace preGameLauncher {
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
-        //if (typeof pglTestMode != undefined) {
-        //    pglSoftwareInfo.insertAt(8, createTextSprite("--===RUNNING-IN-EDITOR===--", 0, 88),)
-        //}
 
         const pglDeviceInfo = [
             createTextSprite("-=Hardware===--------------", 0, 18),
