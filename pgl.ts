@@ -488,7 +488,7 @@ namespace preGameLauncher {
         game.pushScene()
         color.setColor(7, 0xffffff)
         color.setColor(6, 0xffffff)
-        scene.setBackgroundColor(backgroundColour)
+        scene.setBackgroundColor(backgroundColour || 2)
         pause(1)
         if (game.ask(title, subtitle)) {
             color.setPalette(color.bufferToPalette(pglColourPalette))
