@@ -390,7 +390,7 @@ namespace preGameLauncher {
             }
         }
         return (pglMENUITM_ConfigList)
-    }
+    }  
     const pglProgCfg: ConfigInterface[] = []
 
     export interface ConfigInterface {
