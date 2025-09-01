@@ -1,27 +1,38 @@
  
-To add your own settings into the config menu, use this:
+To use this extention add the following code to be ran before anything else.
 ```
-PGL.pglProgCfg.push({
-        name: "testBoolean",
-        type: "boolean",
-        defaultValue: true,
-        limits: { min: 0, max: 0 }, // values does not matter as the boolean can only be true (1) or false (0) so these are not used
-    })
-PGL.pglProgCfg.push({
-        name: "testNumber",
-        type: "number",
-        defaultValue: 5,
-        limits: { min: 1, max: 10 }, // limits from 0 to 10. set max to -255 or smaller to disable
-    })
-PGL.pglProgCfg.push({
-        name: "meow",
-        type: "string",
-        defaultValue: "Hewo :3 I'm a test string.",
-        limits: { min: 0, max: 26 }, // max of 0 means the user will ony be able to input 1 character // max of 26 means the user can imput 26 characters // min is not used for strings 
-    })
-```
+preGameLauncher.setConfig(
+    preGameLauncher.createConfig(
+        "twest stwing",
+        "hewo :3",
+        0, // unused for type string
+        10 // this means it can only have up to 10 characters when editing it in the program config menu
+    ),
+    preGameLauncher.createConfig(
+        "test number",
+        12,
+        5, // This means the value cannot go below 5 in the program config menu
+        15 // This means the value cannot go below 15 in the program config menu
+    ),
+    preGameLauncher.createConfig(
+        "test boolean",
+        true,
+        0, // unused for type boolean
+        0 // unused for type boolean
+    )
+)
 
-> Open this page at [https://aokumo21.github.io/pregameenv-arcade/](https://aokumo21.github.io/pregameenv-arcade/)
+// Max of 16 config things. Can be increased by modifying pglCfg.ts if required.
+
+preGameLauncher.run(gameVer, gameAuthor, bootToConfig?)
+// Replace gameVer with the version of your program. e.g. "v1.0.0"
+// Replace gameAuther with your username. e.g. "aokumo"
+
+// bootToConfig is used for development perposes so I didn't have to input the button como every time I restarted the program.
+// Is an optional argument, however if set to true then the program will boot straight into the config menu.
+// Setting it to false is the same as not setting it to anything.
+```
+> Open this page at [https://aokumo21.github.io/pglPxt/](https://aokumo21.github.io/pglPxt/)
 
 ## Use as Extension
 
@@ -30,7 +41,7 @@ This repository can be added as an **extension** in MakeCode.
 * open [https://arcade.makecode.com/](https://arcade.makecode.com/)
 * click on **New Project**
 * click on **Extensions** under the gearwheel menu
-* search for **https://github.com/aokumo21/pregameenv-arcade** and import
+* search for **https://github.com/aokumo21/pglPxt** and import
 
 ## Edit this project
 
@@ -38,7 +49,7 @@ To edit this repository in MakeCode.
 
 * open [https://arcade.makecode.com/](https://arcade.makecode.com/)
 * click on **Import** then click on **Import URL**
-* paste **https://github.com/aokumo21/pregameenv-arcade** and click import
+* paste **https://github.com/aokumo21/pglPxt** and click import
 
 #### Metadata (used for search, rendering)
 
