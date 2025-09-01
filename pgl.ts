@@ -472,7 +472,6 @@ namespace preGameLauncher {
             }
             pglProgCfg.push(a[i])
         }
-        return "hewo :3"
     }
     
         function setupMiniMenu(menu: miniMenu.MenuSprite) {
