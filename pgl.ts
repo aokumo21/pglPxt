@@ -403,7 +403,8 @@ namespace preGameLauncher {
             limits: { min, max }
         }
     }
-    // "Borrowed" most of this code from the mini menu extention. So credits to riknoll.
+
+    // "Borrowed" most of the following code for setConfig() from the mini menu extention. So credits to riknoll.
     // https://github.com/riknoll/arcade-mini-menu
 
     /**
