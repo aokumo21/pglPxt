@@ -6,6 +6,23 @@
 namespace preGameLauncher {
     export const pglDebugEnabled = (settings.readNumber("pglDebug") == 1 || false)
     export const preGameLauncherVer = "0.0.1"
+    export const pglColourPalette = hex`
+        000000
+        ffffff
+        0022c7
+        002bfb
+        d62816
+        ff331c
+        d433c7
+        ff40fc
+        00c525
+        00f92f
+        00c7c9
+        00fbfe
+        ccc82a
+        fffc36
+        cacaca
+        000000`
     
     /**
      * This runs the preGameLauncher. Place this at the start of the on start block.
@@ -36,23 +53,7 @@ namespace preGameLauncher {
         // 14 Gray
         // 15 Black
         //https://lospec.com/palette-list/zx-spectrum-adjusted
-        color.setPalette(color.bufferToPalette(hex`
-        000000
-        ffffff
-        0022c7
-        002bfb
-        d62816
-        ff331c
-        d433c7
-        ff40fc
-        00c525
-        00f92f
-        00c7c9
-        00fbfe
-        ccc82a
-        fffc36
-        cacaca
-        000000`))
+        color.setPalette(color.bufferToPalette(pglColourPalette))
         controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
         })
         console.log("=========================")
@@ -210,6 +211,8 @@ namespace preGameLauncher {
             const pglOptionMax = pglProgCfg.get(selectedIndex).limits.max
             const pglPromptName = pglProgCfg.get(selectedIndex).name
             const pglOptionType = pglProgCfg.get(selectedIndex).cfgtype
+            color.setColor(7, 0x0022c7)
+            color.setColor(6, 0xffffff)
             if (pglOptionType == "string") {
                 settings.writeString(pglPromptName, game.askForString(pglPromptName, pglOptionMax > 0 ? pglOptionMax : 1))
                 console.log(pglPromptName + ": " + settings.readString(pglPromptName))
@@ -228,9 +231,16 @@ namespace preGameLauncher {
                 }
                 console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
             } else if (pglOptionType == "boolean") {
+                game.pushScene()
+                color.setColor(7, 0xffffff)
+                color.setColor(6, 0xffffff)
+                scene.setBackgroundColor(2)
+                pause(1)
                 settings.writeNumber(pglPromptName, +game.ask(pglPromptName))
                 console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
+                game.popScene()
             }
+            color.setPalette(color.bufferToPalette(pglColourPalette))
             pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
             pglConfigModifed = true
         })
@@ -238,8 +248,17 @@ namespace preGameLauncher {
             pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
             pglGUI_ConfigTab.setButtonEventsEnabled(false)
             pglCfgMainMenu.setButtonEventsEnabled(true)
-            if (pglConfigModifed == true){
-                game.splash("NOTICE:                   ", "Restart to apply changes. ") // The large spaces are used to align the text to the left
+            if (pglConfigModifed == true) {
+                game.pushScene()
+                color.setColor(7, 0xffffff)
+                color.setColor(6, 0xffffff)
+                scene.setBackgroundColor(2)
+                pause(1)
+                if(game.ask("Restart required.", "Press A to reboot now.")) {
+                 control.reset()
+                }
+                color.setPalette(color.bufferToPalette(pglColourPalette))
+                game.popScene()
             }
         })
 
@@ -271,10 +290,29 @@ namespace preGameLauncher {
         })
 
         pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
-            if (selectedIndex == 0) {
+            if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
+                game.pushScene()
+                color.setColor(7, 0xffffff)
+                color.setColor(6, 0xffffff)
+                scene.setBackgroundColor(2)
+                pause(1)
+                if (game.ask("ENABLE DEBUG?", "THE DEVICE WILL RESTART.")) {
+                    settings.writeNumber("pglDebug", 1)
+                    control.reset()
+                }
+                color.setPalette(color.bufferToPalette(pglColourPalette))
+                game.popScene()
+            } else if (selectedIndex == 0) {
+                game.pushScene()
+                color.setColor(7, 0xffffff)
+                color.setColor(6, 0xffffff)
+                scene.setBackgroundColor(2)
+                pause(1)
                 if(game.ask("NOTICE", "Press A to reboot.")) {
                     control.reset()
                 }
+                color.setPalette(color.bufferToPalette(pglColourPalette))
+                game.popScene()
             }
         })
     }
