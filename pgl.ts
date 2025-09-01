@@ -57,7 +57,7 @@ namespace preGameLauncher {
         controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
         })
         console.log("=========================")
-        console.log("Check out the github repo! https://github.com/aokumo21/PGLpxt/")
+        console.log("Check out the github repo! https://github.com/aokumo21/pglPxt/")
         console.log("=========================")
         console.log("====CONSOLE=LOG=START====")
         console.log("=========================")
@@ -79,11 +79,7 @@ namespace preGameLauncher {
         console.log("RAM-Size (KB): " + control.ramSize() / 1024)
         console.log("=========================")
         pause(200)
-        
-        //Will be removed later and replaced with the cfg_screen
-        if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-            INIT_RESET_CFG()
-        }
+
         console.log("Program:\n" + control.programName()) //Print programName
 
         if (pglDebugEnabled == true) {
@@ -189,16 +185,11 @@ namespace preGameLauncher {
             createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
         //////////////
-        //CONFIG TAB//
+        //Config tab//
         //////////////
         let pglGUI_ConfigTab: miniMenu.MenuSprite = null
         pglGUI_ConfigTab = miniMenu.createMenuFromArray(create_pglMENUITM())
-        pglGUI_ConfigTab.setButtonEventsEnabled(false)
-        pglGUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
-        pglGUI_ConfigTab.setDimensions(160, 96)
-        pglGUI_ConfigTab.setPosition(screen.width - pglGUI_ConfigTab.width / 2 + 0, 60)
-        pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
-        pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
+        setupMiniMenu(pglGUI_ConfigTab)
 
         let pglConfigModifed = false
         pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
@@ -226,14 +217,8 @@ namespace preGameLauncher {
                 }
                 console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
             } else if (pglOptionType == "boolean") {
-                game.pushScene()
-                color.setColor(7, 0xffffff)
-                color.setColor(6, 0xffffff)
-                scene.setBackgroundColor(2)
-                pause(1)
-                settings.writeNumber(pglPromptName, +game.ask(pglPromptName))
+                settings.writeNumber(pglPromptName, +pglAsk(pglPromptName))
                 console.log(pglPromptName + ": " + settings.readNumber(pglPromptName))
-                game.popScene()
             }
             color.setPalette(color.bufferToPalette(pglColourPalette))
             pglGUI_ConfigTab.setMenuItems(create_pglMENUITM()) // It took way too long for me to figure out how to make the menu update :sob:
@@ -243,27 +228,32 @@ namespace preGameLauncher {
             pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
             pglGUI_ConfigTab.setButtonEventsEnabled(false)
             pglCfgMainMenu.setButtonEventsEnabled(true)
-            if (pglConfigModifed == true) {
-                game.pushScene()
-                color.setColor(7, 0xffffff)
-                color.setColor(6, 0xffffff)
-                scene.setBackgroundColor(2)
-                pause(1)
-                if(game.ask("Restart required.", "Press A to reboot now.")) {
+            if (pglConfigModifed == true && pglAsk("Restart required.", "Press A to reboot now.")) {
+                //if(pglAsk("Restart required.", "Press A to reboot now.")) {
                  control.reset()
-                }
-                color.setPalette(color.bufferToPalette(pglColourPalette))
-                game.popScene()
+                //}
             }
         })
 
-        //Menu input handler
+        //////////////////
+        //Debug menu tab//
+        //////////////////
+        const pglGUI_DebugTab = miniMenu.createMenu(
+            miniMenu.createMenuItem("Disable debug mode"),
+            miniMenu.createMenuItem("???"),
+            miniMenu.createMenuItem("Clear Data"),
+        )
+        setupMiniMenu(pglGUI_DebugTab)
+        //////////////////////
+        //Menu input handler//
+        //////////////////////
         pglCfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
             console.log(selection)
 
             for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, true)
             for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, true)
             pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
+            pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, true)
 
             if (selectedIndex == 0) {  
                 for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, false)
@@ -271,7 +261,9 @@ namespace preGameLauncher {
                 for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, false)
             } else if (selectedIndex == 2) {
                 pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
-                }
+            } else if (selectedIndex == 3) {
+                pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, false)
+            }
         })
 
         pglCfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
@@ -286,60 +278,46 @@ namespace preGameLauncher {
 
         pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
             if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-                game.pushScene()
-                color.setColor(7, 0xffffff)
-                color.setColor(6, 0xffffff)
-                scene.setBackgroundColor(2)
-                pause(1)
-                if (game.ask("ENABLE DEBUG?", "THE DEVICE WILL RESTART.")) {
+                if (pglAsk("ENABLE DEBUG?", "THE DEVICE WILL RESTART.")) {
                     settings.writeNumber("pglDebug", 1)
                     control.reset()
                 }
-                color.setPalette(color.bufferToPalette(pglColourPalette))
-                game.popScene()
-            } else if (selectedIndex == 0) {
-                game.pushScene()
-                color.setColor(7, 0xffffff)
-                color.setColor(6, 0xffffff)
-                scene.setBackgroundColor(2)
-                pause(1)
-                if(game.ask("NOTICE", "Press A to reboot.")) {
-                    control.reset()
-                }
-                color.setPalette(color.bufferToPalette(pglColourPalette))
-                game.popScene()
+            } else if (selectedIndex == 0 && pglAsk("NOTICE", "Press A to reboot.")) {
+                control.reset()
             }
         })
-    }
+        pglGUI_DebugTab.onSelectionChanged(function (selection: string, selectedIndex: number) {
+            if (selectedIndex == 0) {  
 
-    function INIT_RESET_CFG() {
-        console.log("INIT_RESET_CFG")
-        music.play(music.createSoundEffect(WaveShape.Sawtooth, 1000, 1000, 255, 255, 250, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
-        pause(20)
-        music.play(music.createSoundEffect(WaveShape.Sawtooth, 1000, 1000, 255, 255, 250, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
-        pause(20)
-        music.play(music.createSoundEffect(WaveShape.Sawtooth, 1000, 1000, 255, 255, 250, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
-        if (game.ask("RESET DATA?", "!THIS CANNOT BE REVERTED!") == true) {
-            if (game.ask("ARE YOU SURE???", "THIS IS YOUR LAST WARNING") == true) {
-                pause(200)
-                settings.clear()
-                console.log("=========================")
-                console.log("RESET!")
-                console.log("PRESS ANY BUTTON ")
-                console.log("=========================")
-                control.runInParallel(function () {
-                    console.log("AUTO REBOOTING IN 5s")
-                    pause(1000)
-                    console.log("AUTO REBOOTING IN 4s")
-                })
-                pauseUntil(() => controller.anyButton.isPressed())
-                game.reset()
-            } else {
-                game.reset()
-            }
-        } else {
-            game.reset()
-        }
+            } else if (selectedIndex == 1) {
+
+            } else if (selectedIndex == 2) {
+                
+                }
+        })
+    }
+    function setupMiniMenu(menu: miniMenu.MenuSprite) {
+        menu.setButtonEventsEnabled(false)
+        menu.setFlag(SpriteFlag.RelativeToCamera, true)
+        menu.setDimensions(160, 96)
+        menu.setPosition(screen.width - menu.width / 2 + 0, 60)
+        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
+        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
+    }
+    function pglAsk(title: string, subtitle?: string) {
+        game.pushScene()
+        color.setColor(7, 0xffffff)
+        color.setColor(6, 0xffffff)
+        scene.setBackgroundColor(2)
+        pause(1)
+        if (game.ask(title, subtitle)) {
+            color.setPalette(color.bufferToPalette(pglColourPalette))
+            game.popScene()
+            return true
+        } 
+        color.setPalette(color.bufferToPalette(pglColourPalette))
+        game.popScene()
+        return false
     }
     function FIRST_STARTUP() {
         console.log("FIRST_STARTUP")
