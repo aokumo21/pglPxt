@@ -66,11 +66,6 @@ namespace preGameLauncher {
         
         settings.writeString("gameVer", gameVer || "msgnotfound")
         settings.writeString("gameAuthor", gameAuthor || "msgnotfound")
-        if (settings.readNumber("DoneInitialSetup") != 1) {
-            FIRST_STARTUP()
-        }
-        screen.setBrightness(settings.readNumber("screenBrightness"))
-        music.setVolume(settings.readNumber("speekerVolume"))
         console.log("PreGameLauncher: " + preGameLauncherVer)
         // Print device info
         pause(100)
@@ -79,6 +74,12 @@ namespace preGameLauncher {
         console.log("RAM-Size (KB): " + control.ramSize() / 1024)
         console.log("=========================")
         pause(200)
+
+        if (settings.readNumber("DoneInitialSetup") != 1) {
+            pglInitialSetup()
+        }
+        screen.setBrightness(settings.readNumber("screenBrightness"))
+        music.setVolume(settings.readNumber("speekerVolume"))
 
         console.log("Program:\n" + control.programName()) //Print programName
 
@@ -229,10 +230,9 @@ namespace preGameLauncher {
             pglGUI_ConfigTab.setButtonEventsEnabled(false)
             pglCfgMainMenu.setButtonEventsEnabled(true)
             if (pglConfigModifed == true && pglAsk("Restart required.", "Press A to reboot now.")) {
-                //if(pglAsk("Restart required.", "Press A to reboot now.")) {
                  control.reset()
-                //}
             }
+            pglConfigModifed = false
         })
 
         //////////////////
@@ -243,7 +243,14 @@ namespace preGameLauncher {
             miniMenu.createMenuItem("???"),
             miniMenu.createMenuItem("Clear Data"),
         )
+
         setupMiniMenu(pglGUI_DebugTab)
+        pglGUI_DebugTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            pglGUI_DebugTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+            pglGUI_DebugTab.setButtonEventsEnabled(false)
+            pglCfgMainMenu.setButtonEventsEnabled(true)
+        })
+
         //////////////////////
         //Menu input handler//
         //////////////////////
@@ -273,6 +280,11 @@ namespace preGameLauncher {
                 pglGUI_ConfigTab.setButtonEventsEnabled(true)
                 pglConfigModifed = false
 
+            } else if (selectedIndex == 3) {
+                pglGUI_DebugTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
+                pglCfgMainMenu.setButtonEventsEnabled(false)
+                pglGUI_DebugTab.setButtonEventsEnabled(true)
+
             }
         })
 
@@ -286,19 +298,19 @@ namespace preGameLauncher {
                 control.reset()
             }
         })
-        pglGUI_DebugTab.onSelectionChanged(function (selection: string, selectedIndex: number) {
+        pglGUI_DebugTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             if (selectedIndex == 0) {  
 
             } else if (selectedIndex == 1) {
 
             } else if (selectedIndex == 2) {
-                
-                }
+                if (pglAsk("CLEAR DATA?", "THIS CANNOT BE REVERTED.", 5)) { settings.clear(); game.reset() }
+            }
         })
     }
 
-    function FIRST_STARTUP() {
-        console.log("FIRST_STARTUP")
+    function pglInitialSetup() {
+        console.log("InitialSetup")
         settings.writeNumber("screenBrightness", screen.brightness())
         settings.writeNumber("speekerVolume", music.volume())
         for (let i = 0; i < pglProgCfg.length; i++) {
@@ -472,11 +484,11 @@ namespace preGameLauncher {
         menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Foreground, 2)
     }
     
-    function pglAsk(title: string, subtitle?: string) {
+    function pglAsk(title: string, subtitle?: string, backgroundColour?: number) {
         game.pushScene()
         color.setColor(7, 0xffffff)
         color.setColor(6, 0xffffff)
-        scene.setBackgroundColor(2)
+        scene.setBackgroundColor(backgroundColour)
         pause(1)
         if (game.ask(title, subtitle)) {
             color.setPalette(color.bufferToPalette(pglColourPalette))
