@@ -95,12 +95,12 @@ namespace preGameLauncher {
         console.log("=========================")
         pause(500)
         if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig == true)) {
-            CFG_SCRN()
+            pglConfigScreen()
         }
         screen.setBrightness(readNumber("screenBrightness"))
         music.setVolume((readNumber("speekerVolume")))
     }
-    function CFG_SCRN() {
+    function pglConfigScreen() {
         pglProgCfg.push({
             name: "screenBrightness",
             cfgtype: "number",
