@@ -94,6 +94,9 @@ namespace preGameLauncher {
         pause(500)
         if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig == true)) {
             pglConfigScreen()
+            while (true) {
+                pause(100)
+            }
         }
         screen.setBrightness(readNumber("screenBrightness"))
         music.setVolume((readNumber("speekerVolume")))
