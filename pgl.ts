@@ -367,15 +367,35 @@ namespace preGameLauncher {
         })
     }
 
+    //% block
+    //% blockId=pgl_write_string
+    //% block="Write string: $name|value: $value|to storage"
+    //% group="Data"
+    //% weight=100
     export function writeString(name: string, value: string) {
         return settings.writeString("str_" + name, value)
     }
+    //% block
+    //% blockId=pgl_read_string
+    //% block="Fetch string: $name|from storage"
+    //% group="Data"
+    //% weight=80
     export function readString(name: string) {
         return settings.readString("str_" + name)
     }
+    //% block
+    //% blockId=pgl_write_number
+    //% block="Write number: $name|value: $value|to storage"
+    //% group="Data"
+    //% weight=90
     export function writeNumber(name: string, value: number) {
         return settings.writeNumber("num_" + name, value)
     }
+    //% block
+    //% blockId=pgl_read_number
+    //% block="Fetch number: $name|from storage"
+    //% group="Data"
+    //% weight=70
     export function readNumber(name: string) {
         return settings.readNumber("num_" + name)
     }
@@ -483,7 +503,7 @@ namespace preGameLauncher {
      * Sets the config used in the config tab in the pgl menu.
      */
     //% blockId=set_configeration
-    //% block="create menu sprite|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
+    //% block="Set config|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
     //% blockSetVariable=setConfig
     //% cfgitem1.shadow=create_configeration
     //% cfgitem2.shadow=create_configeration
