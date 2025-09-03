@@ -41,8 +41,8 @@ namespace preGameLauncher {
     //% group="Run"
     //% weight=100
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
-        _gameVer = readString("dbgVer") || gameVer
-        _gameAuthor = readString("dbgAuthor") || gameAuthor
+        _gameVer = readString("dbgVer") || gameVer || "msgnotfound"
+        _gameAuthor = readString("dbgAuthor") || gameAuthor || "msgnotfound"
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -71,8 +71,6 @@ namespace preGameLauncher {
         scene.setBackgroundColor(15)
         game.consoleOverlay.setVisible(true)
         
-        //writeString("gameVer", gameVer || "msgnotfound")
-        //writeString("gameAuthor", gameAuthor || "msgnotfound")
         console.log("PreGameLauncher: " + preGameLauncherVer)
         // Print device info
         pause(100)
