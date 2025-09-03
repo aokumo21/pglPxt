@@ -97,6 +97,9 @@ namespace preGameLauncher {
         }
         screen.setBrightness(readNumber("screenBrightness"))
         music.setVolume((readNumber("speekerVolume")))
+        color.setPalette(color.originalPalette)
+        game.consoleOverlay.setVisible(false)
+        scene.setBackgroundColor(0)
     }
     function pglConfigScreen() {
         pglProgCfg.push({
