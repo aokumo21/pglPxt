@@ -271,11 +271,9 @@ namespace preGameLauncher {
             for (let i = 0; i < settings.list().length; i++) {
                 if (settings.list()[i].indexOf("str_", 0) === 0) {
                     pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readString(settings.list()[i])))
-                    pglDSEIType.push("string")
 
                 } else if (settings.list()[i].indexOf("num_", 0) === 0) {
                     pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readNumber(settings.list()[i])))
-                    pglDSEIType.push("number")
                 }
             }
             return pglMENUITM_DSE
