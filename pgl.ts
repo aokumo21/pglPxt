@@ -263,64 +263,46 @@ namespace preGameLauncher {
         ////////////////////////////////
         //Debug setttings editor (DSE)//
         ////////////////////////////////
-        console.log("test")
-        function create_pglDSE() {
-            let pglMENUITM_DSE: miniMenu.MenuItem[] = []
-            let pglDSEIType: string[] = []
-            console.log("create_pglDSE")
+        function pglCreateDSEList() {
+            let pglMENUITM_DSE: miniMenu.MenuItem[] = [];
+            let pglDSEIType: string[] = [];
+            console.log("get_pglDSEandType");
             for (let i = 0; i < settings.list().length; i++) {
                 if (settings.list()[i].indexOf("str_", 0) === 0) {
-                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readString(settings.list()[i])))
-
+                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readString(settings.list()[i])));
+                    pglDSEIType.push("string");
                 } else if (settings.list()[i].indexOf("num_", 0) === 0) {
-                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readNumber(settings.list()[i])))
+                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readNumber(settings.list()[i])));
+                    pglDSEIType.push("number");
                 }
             }
-            return pglMENUITM_DSE
-        } 
-        function get_pglDSEType() {
-            let pglDSEIType: string[] = []
-            for (let i = 0; i < settings.list().length; i++) {
-                if (settings.list()[i].indexOf("str_", 0) === 0) {
-                    pglDSEIType.push("string")
+            return { menuItems: pglMENUITM_DSE, types: pglDSEIType };
+} 
 
-                } else if (settings.list()[i].indexOf("num_", 0) === 0) {
-                    pglDSEIType.push("number")
-                }
-            }
-            return pglDSEIType
-        } 
-
-        pglGUI_DSE = miniMenu.createMenuFromArray(create_pglDSE())
+        let pglDSEList = pglCreateDSEList()
+        let pglDSEMenuItems = pglDSEList.menuItems
+        let pglSettingsType = pglDSEList.types
+        pglGUI_DSE = miniMenu.createMenuFromArray(pglDSEMenuItems)
         setupMiniMenu(pglGUI_DSE)
         pglGUI_DSE.z = 10
         pglGUI_DSE.onButtonPressed(controller.A, function (selection, selectedIndex) {
             let name = settings.list()[selectedIndex]
-            let settingType = get_pglDSEType()
             color.setColor(7, 0x0022c7)
             color.setColor(6, 0xffffff)
-            if (settingType[selectedIndex] == "string") {
+            if (pglSettingsType[selectedIndex] == "string") {
                 writeString(name.slice(4), game.askForString(name, 0xff))
                 console.log(name+ ": " + readString(name.slice(4)))
-            } else if (settingType[selectedIndex] == "number") {
+            } else if (pglSettingsType[selectedIndex] == "number") {
                 writeNumber(name.slice(4), game.askForNumber(name, 0xff))
                 console.log(name+ ": " + readNumber(name.slice(4)))
             }
             console.log(name.slice(4) + ": " + readNumber(name))
             color.setPalette(color.bufferToPalette(pglColourPalette))
-            pglGUI_DSE.setMenuItems(create_pglDSE())
-        })
-
-        pglGUI_DSE.onSelectionChanged(function (selection: string, selectedIndex: number) {
-            let name = settings.list()[selectedIndex]
-            let settingType = get_pglDSEType()
-            console.log(name)
-            console.log(name.slice(4))
-            //if (settingType[selectedIndex] == "string") {
-            //    console.log(name.slice(5)+ ": " + readString(name.slice(5)))
-            //} else if (settingType[selectedIndex] == "number") {
-            //    console.log(name.slice(5)+ ": " + readNumber(name.slice(5)))
-            //}
+            pglDSEList = pglCreateDSEList()
+            pglDSEList = pglCreateDSEList()
+            pglDSEMenuItems = pglDSEList.menuItems
+            pglSettingsType = pglDSEList.types
+            pglGUI_DSE.setMenuItems(pglDSEMenuItems)
         })
         
         pglGUI_DSE.onButtonPressed(controller.B, function (selection, selectedIndex) {
@@ -488,7 +470,6 @@ namespace preGameLauncher {
             limits: { min, max }
         }
     }
-
     // "Borrowed" most of the following code for setConfig() from the mini menu extention. So credits to riknoll.
     // https://github.com/riknoll/arcade-mini-menu
 
