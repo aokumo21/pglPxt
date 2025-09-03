@@ -317,7 +317,7 @@ namespace preGameLauncher {
             }
             console.log(name.slice(4) + ": " + readNumber(name))
             color.setPalette(color.bufferToPalette(pglColourPalette))
-            //pglGUI_DSE.setMenuItems(create_pglDSE()[0]) // It took way too long for me to figure out how to make the menu update :sob:
+            pglGUI_DSE.setMenuItems(create_pglDSE())
         })
 
         pglGUI_DSE.onSelectionChanged(function (selection: string, selectedIndex: number) {
@@ -441,6 +441,8 @@ namespace preGameLauncher {
                     case 1:
                         pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
                         break
+                    default:
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
                 }
             }
         }
