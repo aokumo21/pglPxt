@@ -19,3 +19,5 @@ preGameLauncher.setConfig(
     )
 )
 preGameLauncher.run(null, null, true)
+console.log("[test.ts] GameVer: "+preGameLauncher.getGameVer())
+console.log("[test.ts] GameAuth: "+preGameLauncher.getgameAuthor())
