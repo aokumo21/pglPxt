@@ -361,16 +361,16 @@ namespace preGameLauncher {
         })
     }
 
-    function writeString(name: string, value: string) {
+    export function writeString(name: string, value: string) {
         return settings.writeString("str_" + name, value)
     }
-    function readString(name: string) {
+    export function readString(name: string) {
         return settings.readString("str_" + name)
     }
-    function writeNumber(name: string, value: number) {
+    export function writeNumber(name: string, value: number) {
         return settings.writeNumber("num_" + name, value)
     }
-    function readNumber(name: string) {
+    export function readNumber(name: string) {
         return settings.readNumber("num_" + name)
     }
 
