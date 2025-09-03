@@ -504,7 +504,6 @@ namespace preGameLauncher {
      */
     //% blockId=set_configeration
     //% block="Set config|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
-    //% blockSetVariable=setConfig
     //% cfgitem1.shadow=create_configeration
     //% cfgitem2.shadow=create_configeration
     //% cfgitem3.shadow=create_configeration
