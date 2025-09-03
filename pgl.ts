@@ -113,7 +113,7 @@ namespace preGameLauncher {
             defaultValue: 50,
             limits: { min: 0, max: 255 },
         })
-        console.log("CFG_SCRN")
+        console.log("pglConfigScreen")
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
         //TopBarBackgroundImage
