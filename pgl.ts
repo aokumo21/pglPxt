@@ -270,19 +270,19 @@ namespace preGameLauncher {
         //Debug setttings editor (DSE)//
         ////////////////////////////////
         function pglCreateDSEList() {
-            let pglMENUITM_DSE: miniMenu.MenuItem[] = [];
-            let pglDSEIType: string[] = [];
-            console.log("get_pglDSEandType");
+            let pglMENUITM_DSE: miniMenu.MenuItem[] = []
+            let pglDSEIType: string[] = []
+            console.log("get_pglDSEandType")
             for (let i = 0; i < settings.list().length; i++) {
                 if (settings.list()[i].indexOf("str_", 0) === 0) {
-                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readString(settings.list()[i])));
-                    pglDSEIType.push("string");
+                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readString(settings.list()[i])))
+                    pglDSEIType.push("string")
                 } else if (settings.list()[i].indexOf("num_", 0) === 0) {
-                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readNumber(settings.list()[i])));
-                    pglDSEIType.push("number");
+                    pglMENUITM_DSE.push(miniMenu.createMenuItem(settings.list()[i] + ": " + settings.readNumber(settings.list()[i])))
+                    pglDSEIType.push("number")
                 }
             }
-            return { menuItems: pglMENUITM_DSE, types: pglDSEIType };
+            return { menuItems: pglMENUITM_DSE, types: pglDSEIType }
 } 
 
         let pglDSEList = pglCreateDSEList()
