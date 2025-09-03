@@ -93,17 +93,12 @@ namespace preGameLauncher {
         console.log("Version: " + _gameVer) //Print programVersion
         console.log("Author: " + _gameAuthor) //Print programVersion
         console.log("=========================")
-        pause(1000)
+        pause(500)
         if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig == true)) {
             CFG_SCRN()
         }
         screen.setBrightness(readNumber("screenBrightness"))
         music.setVolume((readNumber("speekerVolume")))
-
-        if (readNumber("DBG_DELAYED_STARTUP") == 1) {
-            console.log(" \nDELAYED STARTUP ENABLED")
-            pause(5000)
-        }
     }
     function CFG_SCRN() {
         pglProgCfg.push({
