@@ -169,7 +169,7 @@ namespace pgl {
             createTextSprite("SerialNo: " + control.deviceSerialNumber(), 0, 42),
             createTextSprite("-=Status===----------------", 0, 50),
             createTextSprite("Usb-Initialised: " + control.isUSBInitialized(), 0, 58),
-            createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 66),
+            createTextSprite("Profiling: " + control.profilingEnabled(), 0, 66),
             createTextSprite("DisplayBrightness: " + screen.brightness(), 0, 74),
             createTextSprite("Volume: " + music.volume(), 0, 82),
             createTextSprite("__pglUptimeString", 0, 90),
@@ -581,17 +581,17 @@ namespace pgl {
         return false
     }
     export function createTextSprite(text: string, x: number, y: number, c?: number, f?: fancyText.BaseFont) {
-            const pglTextSprite = fancyText.create(text, 0, c || 2, f)
-            if (text.charAt(0) == "A" || "w" || "W") {
-                pglTextSprite.setPosition(pglTextSprite.width / 2 + x+1, y)
-            } else {
-                pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
-            }
-            if (text == "__pglUptimeString") {
-                game.onUpdateInterval(1000, function () {
-                    pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
-                })
-            }
-            return pglTextSprite
+        const pglTextSprite = fancyText.create(text, 0, c || 2, f)
+        if (text.indexOf("A", 0) == 0 || text.indexOf("w", 0) == 0 || text.indexOf("W", 0) == 0 || text.indexOf("M", 0) == 0 || text.indexOf("m", 0) == 0) {
+            pglTextSprite.setPosition(pglTextSprite.width / 2 + x+1, y)
+        } else {
+            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
         }
+        if (text == "__pglUptimeString") {
+            game.onUpdateInterval(1000, function () {
+                pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+            })
+        }
+        return pglTextSprite
+    }
 }
