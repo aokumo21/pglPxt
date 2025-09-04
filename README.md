@@ -22,7 +22,7 @@ pgl.setConfig(
     )
 )
 
-// Max of 16 config things. Can be increased by modifying pglCfg.ts if required.
+// Max of 16 config things. Can be increased by modifying pgl.ts if required.
 
 pgl.run(gameVer, gameAuthor, bootToConfig?)
 // Replace gameVer with the version of your program. e.g. "v1.0.0"
