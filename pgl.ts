@@ -120,7 +120,7 @@ namespace pgl {
         console.log("pglConfigScreen")
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
-        tiles.setCurrentTilemap(tilemap`level2`)
+        tiles.setCurrentTilemap(tilemap`__pglEmptyTilemap`)
         //TopBarBackgroundImage
         const pglTbbi = image.create(screen.width, 12)
         pglTbbi.fill(2)
