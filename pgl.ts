@@ -33,8 +33,8 @@ namespace pgl {
     //% group="Run"
     //% weight=100
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
-        export const = readString("dbgVer") || gameVer || "msgnotfound"
-        export const = readString("dbgAuthor") || gameAuthor || "msgnotfound"
+        export const gameVer = readString("dbgVer") || gameVer || "msgnotfound"
+        export const gameAuthor = readString("dbgAuthor") || gameAuthor || "msgnotfound"
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
