@@ -127,6 +127,17 @@ namespace pgl {
         //TopBarBackgroundSprite
         const pglTbbs = sprites.create(pglTbbi, SpriteKind.Player)
         pglTbbs.setPosition(pglTbbs.width / 2, pglTbbs.height / 2)
+
+        function createTextSprite(text: string, x: number, y: number) {
+            const pglTextSprite = textsprite.create(text, 0, 2)
+            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            pglTextSprite.setFlag(SpriteFlag.Invisible, true)
+            if (text == "uptime") {
+                game.onUpdateInterval(1000, function () {
+                    pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+                })
+            }
+            return pglTextSprite
         }
 
         const pglCfgMainMenu = miniMenu.createMenu(
@@ -271,322 +282,314 @@ namespace pgl {
                     pglDSEIType.push("number")
                 }
             }
-            return { menuItems: pglMENUITM_DSE, types: pglDSEIType } 
-            let pglDSEList = pglCreateDSEList()
-            let pglDSEMenuItems = pglDSEList.menuItems
-            let pglSettingsType = pglDSEList.types
-            pglGUI_DSE = miniMenu.createMenuFromArray(pglDSEMenuItems)
-            setupMiniMenu(pglGUI_DSE)
-            pglGUI_DSE.z = 10
-            pglGUI_DSE.onButtonPressed(controller.A, function (selection, selectedIndex) {
-                let name = settings.list()[selectedIndex]
-                color.setColor(7, 0x0022c7)
-                color.setColor(6, 0xffffff)
-                if (pglSettingsType[selectedIndex] == "string") {
-                    writeString(name.slice(4), game.askForString(name, 0xff))
-                    console.log(name+ ": " + readString(name.slice(4)))
-                } else if (pglSettingsType[selectedIndex] == "number") {
-                    writeNumber(name.slice(4), game.askForNumber(name, 0xff))
-                    console.log(name+ ": " + readNumber(name.slice(4)))
-                }
-                console.log(name.slice(4) + ": " + readNumber(name))
-                color.setPalette(color.bufferToPalette(pglColourPalette))
-                pglDSEList = pglCreateDSEList()
-                pglDSEList = pglCreateDSEList()
-                pglDSEMenuItems = pglDSEList.menuItems
-                pglSettingsType = pglDSEList.types
-                pglGUI_DSE.setMenuItems(pglDSEMenuItems)
-            })
-            
-            pglGUI_DSE.onButtonPressed(controller.B, function (selection, selectedIndex) {
-                pglGUI_DSE.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
-                pglGUI_DSE.setButtonEventsEnabled(false)
-                pglGUI_DSE.setFlag(SpriteFlag.Invisible, true)
+            return { menuItems: pglMENUITM_DSE, types: pglDSEIType }
+        } 
+
+        let pglDSEList = pglCreateDSEList()
+        let pglDSEMenuItems = pglDSEList.menuItems
+        let pglSettingsType = pglDSEList.types
+        pglGUI_DSE = miniMenu.createMenuFromArray(pglDSEMenuItems)
+        setupMiniMenu(pglGUI_DSE)
+        pglGUI_DSE.z = 10
+        pglGUI_DSE.onButtonPressed(controller.A, function (selection, selectedIndex) {
+            let name = settings.list()[selectedIndex]
+            color.setColor(7, 0x0022c7)
+            color.setColor(6, 0xffffff)
+            if (pglSettingsType[selectedIndex] == "string") {
+                writeString(name.slice(4), game.askForString(name, 0xff))
+                console.log(name+ ": " + readString(name.slice(4)))
+            } else if (pglSettingsType[selectedIndex] == "number") {
+                writeNumber(name.slice(4), game.askForNumber(name, 0xff))
+                console.log(name+ ": " + readNumber(name.slice(4)))
+            }
+            console.log(name.slice(4) + ": " + readNumber(name))
+            color.setPalette(color.bufferToPalette(pglColourPalette))
+            pglDSEList = pglCreateDSEList()
+            pglDSEList = pglCreateDSEList()
+            pglDSEMenuItems = pglDSEList.menuItems
+            pglSettingsType = pglDSEList.types
+            pglGUI_DSE.setMenuItems(pglDSEMenuItems)
+        })
+        
+        pglGUI_DSE.onButtonPressed(controller.B, function (selection, selectedIndex) {
+            pglGUI_DSE.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
+            pglGUI_DSE.setButtonEventsEnabled(false)
+            pglGUI_DSE.setFlag(SpriteFlag.Invisible, true)
+            pglGUI_DebugTab.setButtonEventsEnabled(true)
+        })
+
+        //////////////////////
+        //Menu input handler//
+        //////////////////////
+        pglCfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
+            console.log(selection)
+
+            for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, true)
+            for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, true)
+            pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
+            pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, true)
+
+            if (selectedIndex == 0) {
+                for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, false)
+            } else if (selectedIndex == 1) {
+                for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, false)
+            } else if (selectedIndex == 2) {
+                pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
+            } else if (selectedIndex == 3) {
+                pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, false)
+            }
+        })
+
+        pglCfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
+            if (selectedIndex == 2) {
+                pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
+                pglCfgMainMenu.setButtonEventsEnabled(false)
+                pglGUI_ConfigTab.setButtonEventsEnabled(true)
+                pglConfigModifed = false
+
+            } else if (selectedIndex == 3) {
+                pglGUI_DebugTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
+                pglCfgMainMenu.setButtonEventsEnabled(false)
                 pglGUI_DebugTab.setButtonEventsEnabled(true)
-            })
 
-            //////////////////////
-            //Menu input handler//
-            //////////////////////
-            pglCfgMainMenu.onSelectionChanged(function (selection: string, selectedIndex: number) {
-                console.log(selection)
+            }
+        })
 
-                for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, true)
-                for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, true)
-                pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, true)
-                pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, true)
-
-                if (selectedIndex == 0) {
-                    for (let s of pglSoftwareInfo) s.setFlag(SpriteFlag.Invisible, false)
-                } else if (selectedIndex == 1) {
-                    for (let s of pglDeviceInfo) s.setFlag(SpriteFlag.Invisible, false)
-                } else if (selectedIndex == 2) {
-                    pglGUI_ConfigTab.setFlag(SpriteFlag.Invisible, false)
-                } else if (selectedIndex == 3) {
-                    pglGUI_DebugTab.setFlag(SpriteFlag.Invisible, false)
-                }
-            })
-
-            pglCfgMainMenu.onButtonPressed(controller.A, function (selection, selectedIndex) {
-                if (selectedIndex == 2) {
-                    pglGUI_ConfigTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
-                    pglCfgMainMenu.setButtonEventsEnabled(false)
-                    pglGUI_ConfigTab.setButtonEventsEnabled(true)
-                    pglConfigModifed = false
-
-                } else if (selectedIndex == 3) {
-                    pglGUI_DebugTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 1)
-                    pglCfgMainMenu.setButtonEventsEnabled(false)
-                    pglGUI_DebugTab.setButtonEventsEnabled(true)
-
-                }
-            })
-
-            pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
-                if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
-                    if (pglAsk("ENABLE DEBUG?", "THE DEVICE WILL RESTART.")) {
-                        writeNumber("pglDebug", 1)
-                        control.reset()
-                    }
-                } else if (selectedIndex == 0 && pglAsk("NOTICE", "Press A to reboot.")) {
+        pglCfgMainMenu.onButtonPressed(controller.menu, function (selection, selectedIndex) {
+            if (controller.A.isPressed() && (controller.B.isPressed() && controller.up.isPressed())) {
+                if (pglAsk("ENABLE DEBUG?", "THE DEVICE WILL RESTART.")) {
+                    writeNumber("pglDebug", 1)
                     control.reset()
                 }
-            })
-        }
+            } else if (selectedIndex == 0 && pglAsk("NOTICE", "Press A to reboot.")) {
+                control.reset()
+            }
+        })
+    }
 
-        //% block
-        //% blockId=pgl_write_string
-        //% block="Write string: $name|value: $value|to storage"
-        //% group="Data"
-        //% weight=100
-        export function writeString(name: string, value: string) {
-            return settings.writeString("str_" + name, value)
-        }
-        //% block
-        //% blockId=pgl_read_string
-        //% block="Fetch string: $name|from storage"
-        //% group="Data"
-        //% weight=80
-        export function readString(name: string) {
-            return settings.readString("str_" + name)
-        }
-        //% block
-        //% blockId=pgl_write_number
-        //% block="Write number: $name|value: $value|to storage"
-        //% group="Data"
-        //% weight=90
-        export function writeNumber(name: string, value: number) {
-            return settings.writeNumber("num_" + name, value)
-        }
-        //% block
-        //% blockId=pgl_read_number
-        //% block="Fetch number: $name|from storage"
-        //% group="Data"
-        //% weight=70
-        export function readNumber(name: string) {
-            return settings.readNumber("num_" + name)
-        }
+    //% block
+    //% blockId=pgl_write_string
+    //% block="Write string: $name|value: $value|to storage"
+    //% group="Data"
+    //% weight=100
+    export function writeString(name: string, value: string) {
+        return settings.writeString("str_" + name, value)
+    }
+    //% block
+    //% blockId=pgl_read_string
+    //% block="Fetch string: $name|from storage"
+    //% group="Data"
+    //% weight=80
+    export function readString(name: string) {
+        return settings.readString("str_" + name)
+    }
+    //% block
+    //% blockId=pgl_write_number
+    //% block="Write number: $name|value: $value|to storage"
+    //% group="Data"
+    //% weight=90
+    export function writeNumber(name: string, value: number) {
+        return settings.writeNumber("num_" + name, value)
+    }
+    //% block
+    //% blockId=pgl_read_number
+    //% block="Fetch number: $name|from storage"
+    //% group="Data"
+    //% weight=70
+    export function readNumber(name: string) {
+        return settings.readNumber("num_" + name)
+    }
 
-        function pglInitialSetup() {
-            console.log("InitialSetup")
-            writeNumber("screenBrightness", screen.brightness())
-            writeNumber("speekerVolume", music.volume())
-            for (let i = 0; i < pglProgCfg.length; i++) {
-                if (pglProgCfg.get(i).cfgtype == "string") {
-                    writeString(pglProgCfg.get(i).name, "" + pglProgCfg.get(i).defaultValue)
-                    console.log(readString(pglProgCfg.get(i).name))
+    function pglInitialSetup() {
+        console.log("InitialSetup")
+        writeNumber("screenBrightness", screen.brightness())
+        writeNumber("speekerVolume", music.volume())
+        for (let i = 0; i < pglProgCfg.length; i++) {
+            if (pglProgCfg.get(i).cfgtype == "string") {
+                writeString(pglProgCfg.get(i).name, "" + pglProgCfg.get(i).defaultValue)
+                console.log(readString(pglProgCfg.get(i).name))
 
-                } else if (pglProgCfg.get(i).cfgtype == "boolean") {
-                    if (pglProgCfg.get(i).defaultValue == true) {
-                        writeNumber(pglProgCfg.get(i).name, 1)
-                    } else {
-                        writeNumber(pglProgCfg.get(i).name, 0)
-                    }
-                    console.log(readNumber(pglProgCfg.get(i).name))
-                } else if (pglProgCfg.get(i).cfgtype == "number") {
-                    writeNumber(pglProgCfg.get(i).name, +pglProgCfg.get(i).defaultValue)
-                    console.log(readNumber(pglProgCfg.get(i).name))
+            } else if (pglProgCfg.get(i).cfgtype == "boolean") {
+                if (pglProgCfg.get(i).defaultValue == true) {
+                    writeNumber(pglProgCfg.get(i).name, 1)
+                } else {
+                    writeNumber(pglProgCfg.get(i).name, 0)
+                }
+                console.log(readNumber(pglProgCfg.get(i).name))
+            } else if (pglProgCfg.get(i).cfgtype == "number") {
+                writeNumber(pglProgCfg.get(i).name, +pglProgCfg.get(i).defaultValue)
+                console.log(readNumber(pglProgCfg.get(i).name))
+            }
+        }
+        writeNumber("DoneInitialSetup", 1)
+    }
+
+    function create_pglConfigList() {
+        let pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
+        console.log("create_pglMENUITM")
+        for (let i = 0; i < pglProgCfg.length; i++) {
+            if (pglProgCfg.get(i).cfgtype == "string") {
+                pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + readString(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).cfgtype == "number") {
+                pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + readNumber(pglProgCfg.get(i).name)))
+            } else if (pglProgCfg.get(i).cfgtype == "boolean") {
+                switch (readNumber(pglProgCfg.get(i).name)) {
+                    case 0:
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
+                        break
+                    case 1:
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
+                        break
+                    default:
+                        pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
                 }
             }
-            writeNumber("DoneInitialSetup", 1)
         }
+        return (pglMENUITM_ConfigList)
+    }  
+    const pglProgCfg: ConfigInterface[] = []
 
-        function create_pglConfigList() {
-            let pglMENUITM_ConfigList: miniMenu.MenuItem[] = []
-            console.log("create_pglMENUITM")
-            for (let i = 0; i < pglProgCfg.length; i++) {
-                if (pglProgCfg.get(i).cfgtype == "string") {
-                    pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + readString(pglProgCfg.get(i).name)))
-                } else if (pglProgCfg.get(i).cfgtype == "number") {
-                    pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": " + readNumber(pglProgCfg.get(i).name)))
-                } else if (pglProgCfg.get(i).cfgtype == "boolean") {
-                    switch (readNumber(pglProgCfg.get(i).name)) {
-                        case 0:
-                            pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
-                            break
-                        case 1:
-                            pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": true"))
-                            break
-                        default:
-                            pglMENUITM_ConfigList.push(miniMenu.createMenuItem(pglProgCfg.get(i).name + ": false"))
-                    }
-                }
-            }
-            return (pglMENUITM_ConfigList)
-        }  
-        const pglProgCfg: ConfigInterface[] = []
-
-        export interface ConfigInterface {
-            name: string
-            cfgtype: ConfigType
-            defaultValue: boolean | number | string
-            limits: {
-                min: number
-                max: number
-            }
-        }
-
-        type ConfigType = "boolean" | "number" | "string"
-
-        //% blockId=create_configeration
-        //% block="Configuration|cfgName %name|defaultValue %defaultValue|minValue %min|maxValue %max"
-        //% group="Config"
-        //% weight=90
-        //% name.defl="name"
-        //% min.defl="0"
-        //% max.defl="1"
-        export function createConfig(
-            name: string,
-            defaultValue: boolean | number | string,
-            min: number,
+    export interface ConfigInterface {
+        name: string
+        cfgtype: ConfigType
+        defaultValue: boolean | number | string
+        limits: {
+            min: number
             max: number
-        ): ConfigInterface {
-            let cfgtype: ConfigType
-            console.log(name)
-            console.log(defaultValue)
-            console.log(min)
-            console.log(max)
-            if (defaultValue === undefined || defaultValue === ""){
-                defaultValue = "MISSINGNO."
-                cfgtype = "string"
-            } else if (typeof defaultValue === "number") {
-                cfgtype = "number"
-            } else if (typeof defaultValue === "boolean") {
-                cfgtype = "boolean"
-            } else {
-                cfgtype = "string"
-            }
-            return {
-                name,
-                cfgtype,
-                defaultValue,
-                limits: { min, max }
-            }
         }
-        // "Borrowed" most of the following code for setConfig() from the mini menu extention. So credits to riknoll.
-        // https://github.com/riknoll/arcade-mini-menu
+    }
 
-        /**
-         * Sets the config used in the config tab in the pgl menu.
-         */
-        //% blockId=set_configeration
-        //% block="Set config|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
-        //% cfgitem1.shadow=create_configeration
-        //% cfgitem2.shadow=create_configeration
-        //% cfgitem3.shadow=create_configeration
-        //% cfgitem4.shadow=create_configeration
-        //% cfgitem5.shadow=create_configeration
-        //% cfgitem6.shadow=create_configeration
-        //% cfgitem7.shadow=create_configeration
-        //% cfgitem8.shadow=create_configeration
-        //% cfgitem9.shadow=create_configeration
-        //% cfgitem10.shadow=create_configeration
-        //% cfgitem11.shadow=create_configeration
-        //% cfgitem12.shadow=create_configeration
-        //% cfgitem13.shadow=create_configeration
-        //% cfgitem14.shadow=create_configeration
-        //% cfgitem15.shadow=create_configeration
-        //% cfgitem16.shadow=create_configeration
-        //% group="Config"
-        //% weight=100
-        export function setConfig(
-            cfgitem1: ConfigInterface,
-            cfgitem2?: ConfigInterface,
-            cfgitem3?: ConfigInterface,
-            cfgitem4?: ConfigInterface,
-            cfgitem5?: ConfigInterface,
-            cfgitem6?: ConfigInterface,
-            cfgitem7?: ConfigInterface,
-            cfgitem8?: ConfigInterface,
-            cfgitem9?: ConfigInterface,
-            cfgitem10?: ConfigInterface,
-            cfgitem11?: ConfigInterface,
-            cfgitem12?: ConfigInterface,
-            cfgitem13?: ConfigInterface,
-            cfgitem14?: ConfigInterface,
-            cfgitem15?: ConfigInterface,
-            cfgitem16?: ConfigInterface,
-        ) {
-            const a = [
-                cfgitem1,
-                cfgitem2,
-                cfgitem3,
-                cfgitem4,
-                cfgitem5,
-                cfgitem6,
-                cfgitem7,
-                cfgitem8,
-                cfgitem9,
-                cfgitem10,
-                cfgitem11,
-                cfgitem12,
-                cfgitem13,
-                cfgitem14,
-                cfgitem15,
-                cfgitem16,
-            ]
-            for (let i = 0; Infinity; i++) {
-                if (a[i] === undefined) {
-                    break
-                }
-                pglProgCfg.push(a[i])
+    type ConfigType = "boolean" | "number" | "string"
+
+    //% blockId=create_configeration
+    //% block="Configuration|cfgName %name|defaultValue %defaultValue|minValue %min|maxValue %max"
+    //% group="Config"
+    //% weight=90
+    //% name.defl="name"
+    //% min.defl="0"
+    //% max.defl="1"
+    export function createConfig(
+        name: string,
+        defaultValue: boolean | number | string,
+        min: number,
+        max: number
+    ): ConfigInterface {
+        let cfgtype: ConfigType
+        console.log(name)
+        console.log(defaultValue)
+        console.log(min)
+        console.log(max)
+        if (defaultValue === undefined || defaultValue === ""){
+            defaultValue = "MISSINGNO."
+            cfgtype = "string"
+        } else if (typeof defaultValue === "number") {
+            cfgtype = "number"
+        } else if (typeof defaultValue === "boolean") {
+            cfgtype = "boolean"
+        } else {
+            cfgtype = "string"
+        }
+        return {
+            name,
+            cfgtype,
+            defaultValue,
+            limits: { min, max }
+        }
+    }
+    // "Borrowed" most of the following code for setConfig() from the mini menu extention. So credits to riknoll.
+    // https://github.com/riknoll/arcade-mini-menu
+
+    /**
+     * Sets the config used in the config tab in the pgl menu.
+     */
+    //% blockId=set_configeration
+    //% block="Set config|$cfgitem1||$cfgitem2 $cfgitem3 $cfgitem4 $cfgitem5 $cfgitem6 $cfgitem7 $cfgitem8 $cfgitem9 $cfgitem10 $cfgitem11 $cfgitem12 $cfgitem13 $cfgitem14 $cfgitem15 $cfgitem16"
+    //% blockSetVariable=setConfig
+    //% cfgitem1.shadow=create_configeration
+    //% cfgitem2.shadow=create_configeration
+    //% cfgitem3.shadow=create_configeration
+    //% cfgitem4.shadow=create_configeration
+    //% cfgitem5.shadow=create_configeration
+    //% cfgitem6.shadow=create_configeration
+    //% cfgitem7.shadow=create_configeration
+    //% cfgitem8.shadow=create_configeration
+    //% cfgitem9.shadow=create_configeration
+    //% cfgitem10.shadow=create_configeration
+    //% cfgitem11.shadow=create_configeration
+    //% cfgitem12.shadow=create_configeration
+    //% cfgitem13.shadow=create_configeration
+    //% cfgitem14.shadow=create_configeration
+    //% cfgitem15.shadow=create_configeration
+    //% cfgitem16.shadow=create_configeration
+    //% group="Config"
+    //% weight=100
+    export function setConfig(
+        cfgitem1: ConfigInterface,
+        cfgitem2?: ConfigInterface,
+        cfgitem3?: ConfigInterface,
+        cfgitem4?: ConfigInterface,
+        cfgitem5?: ConfigInterface,
+        cfgitem6?: ConfigInterface,
+        cfgitem7?: ConfigInterface,
+        cfgitem8?: ConfigInterface,
+        cfgitem9?: ConfigInterface,
+        cfgitem10?: ConfigInterface,
+        cfgitem11?: ConfigInterface,
+        cfgitem12?: ConfigInterface,
+        cfgitem13?: ConfigInterface,
+        cfgitem14?: ConfigInterface,
+        cfgitem15?: ConfigInterface,
+        cfgitem16?: ConfigInterface,
+    ) {
+        const a = [
+            cfgitem1,
+            cfgitem2,
+            cfgitem3,
+            cfgitem4,
+            cfgitem5,
+            cfgitem6,
+            cfgitem7,
+            cfgitem8,
+            cfgitem9,
+            cfgitem10,
+            cfgitem11,
+            cfgitem12,
+            cfgitem13,
+            cfgitem14,
+            cfgitem15,
+            cfgitem16,
+        ]
+        for (let i = 0; Infinity; i++) {
+            if (a[i] === undefined) {
+                break
             }
+            pglProgCfg.push(a[i])
         }
-        
-        function setupMiniMenu(menu: miniMenu.MenuSprite) {
-            menu.setButtonEventsEnabled(false)
-            menu.setFlag(SpriteFlag.Invisible, true)
-            menu.setFlag(SpriteFlag.RelativeToCamera, true)
-            menu.setDimensions(160, 96)
-            menu.setPosition(screen.width - menu.width / 2 + 0, 60)
-            menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
-            menu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 2)
-        }
-        
-        function pglAsk(title: string, subtitle?: string, backgroundColour?: number) {
-            game.pushScene()
-            color.setColor(7, 0xffffff)
-            color.setColor(6, 0xffffff)
-            scene.setBackgroundColor(backgroundColour || 2)
-            pause(1)
-            if (game.ask(title, subtitle)) {
-                color.setPalette(color.bufferToPalette(pglColourPalette))
-                game.popScene()
-                return true
-            } 
+    }
+    
+    function setupMiniMenu(menu: miniMenu.MenuSprite) {
+        menu.setButtonEventsEnabled(false)
+        menu.setFlag(SpriteFlag.Invisible, true)
+        menu.setFlag(SpriteFlag.RelativeToCamera, true)
+        menu.setDimensions(160, 96)
+        menu.setPosition(screen.width - menu.width / 2 + 0, 60)
+        menu.setStyleProperty(miniMenu.StyleKind.All, miniMenu.StyleProperty.Background, 14)
+        menu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 2)
+    }
+    
+    function pglAsk(title: string, subtitle?: string, backgroundColour?: number) {
+        game.pushScene()
+        color.setColor(7, 0xffffff)
+        color.setColor(6, 0xffffff)
+        scene.setBackgroundColor(backgroundColour || 2)
+        pause(1)
+        if (game.ask(title, subtitle)) {
             color.setPalette(color.bufferToPalette(pglColourPalette))
             game.popScene()
-            return false
-        }
-        export function createTextSprite(text: string, x: number, y: number) {
-                const pglTextSprite = textsprite.create(text, 0, 2)
-                pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
-                pglTextSprite.setFlag(SpriteFlag.Invisible, true)
-                if (text == "uptime") {
-                    game.onUpdateInterval(1000, function () {
-                        pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
-                    })
-                }
-                return pglTextSprite
-        }
+            return true
+        } 
+        color.setPalette(color.bufferToPalette(pglColourPalette))
+        game.popScene()
+        return false
+    }
 }
