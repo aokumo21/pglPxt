@@ -23,9 +23,17 @@ namespace pgl {
         fffc36
         cacaca
         000000`
+    
+    let _gameVer: string
+    let _gameAuthor: string
+    export function getGameVer() {  
+        return _gameVer
+    }
+    export function getgameAuthor() {  
+        return _gameAuthor
+    }
     /**
      * This runs the preGameLauncher. Place this at the start of the on start block.
-     * @param interval speed of scroll
     */
     //% block
     //% blockId=run_pre_game_launcher
@@ -33,8 +41,8 @@ namespace pgl {
     //% group="Run"
     //% weight=100
     export function run(gameVerStr: string, gameAuthorStr: string, bootToConfig?: boolean) {
-        export const gameVer = readString("dbgVer") || gameVerStr || "msgnotfound"
-        export const gameAuthor = readString("dbgAuthor") || gameAuthorStr || "msgnotfound"
+        _gameVer = readString("dbgVer") || gameVerStr || "msgnotfound"
+        _gameAuthor= readString("dbgAuthor") || gameAuthorStr || "msgnotfound"
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
@@ -80,8 +88,8 @@ namespace pgl {
 
         console.log("Program:\n" + control.programName()) //Print programName
 
-        console.log("Version: " + gameVer) //Print programVersion
-        console.log("Author: " + gameAuthor) //Print programVersion
+        console.log("Version: " + _gameVer) //Print programVersion
+        console.log("Author: " + _gameAuthor) //Print programVersion
         console.log("=========================")
         pause(500)
         if (controller.A.isPressed() && controller.B.isPressed() && controller.down.isPressed() || (bootToConfig == true)) {
@@ -149,8 +157,8 @@ namespace pgl {
             createTextSprite("-=Program===---------------", 0, 42,),
             createTextSprite(control.programName(), 0, 50),
             createTextSprite("ProgHash: " + control.programHash(), 0, 58),
-            createTextSprite("Version: " + gameVer, 0, 66),
-            createTextSprite("Author: " + gameAuthor, 0, 74),
+            createTextSprite("Version: " + _gameVer, 0, 66),
+            createTextSprite("Author: " + _gameAuthor, 0, 74),
             createTextSprite("Press menu to reboot", 10, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/pglPxt`, 0, 116)
