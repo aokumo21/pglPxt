@@ -5,7 +5,6 @@
         "device": "*",
         "Color Fading": "github:jwunderl/pxt-color#v0.2.3",
         "arcade-mini-menu": "github:riknoll/arcade-mini-menu#v0.0.1",
-        "arcade-text": "github:AqeeAqee/arcade-text#v1.5.2",
         "arcade-fancy-text": "github:aokumo21/arcade-fancy-text#0.1.2"
     },
     "files": [
