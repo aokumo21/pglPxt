@@ -156,7 +156,7 @@ namespace pgl {
             createTextSprite(control.programName(), 0, 50),
             createTextSprite("ProgHash: " + control.programHash(), 0, 58),
             createTextSprite("Version: " + _gameVer, 0, 66),
-            createTextSprite("Author: " + _gameAuthor, 1, 74),
+            createTextSprite("Author: " + _gameAuthor, 0, 74),
             createTextSprite("Press menu to reboot", 20, 102),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
@@ -582,11 +582,10 @@ namespace pgl {
     }
     export function createTextSprite(text: string, x: number, y: number, c?: number, f?: fancyText.BaseFont) {
             const pglTextSprite = fancyText.create(text, 0, c || 2, f)
-            switch(text.charAt(0)) {
-                case "A"||"w"||"W":
-                    pglTextSprite.setPosition(pglTextSprite.width / 2 + x+1, y)
-                default:
-                    pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            if (text.charAt(0) == "A" || "w" || "W") {
+                pglTextSprite.setPosition(pglTextSprite.width / 2 + x+1, y)
+            } else {
+                pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
             }
             if (text == "__pglUptimeString") {
                 game.onUpdateInterval(1000, function () {
