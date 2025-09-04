@@ -584,7 +584,7 @@ namespace pgl {
             const pglTextSprite = fancyText.create(text, 0, c || 2, f)
             switch(text.charAt(0)) {
                 case "A"||"w"||"W":
-                    pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+                    pglTextSprite.setPosition(pglTextSprite.width / 2 + x+1, y)
                 default:
                     pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
             }
