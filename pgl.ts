@@ -580,8 +580,8 @@ namespace pgl {
         game.popScene()
         return false
     }
-    export function createTextSprite(text: string, x: number, y: number) {
-            const pglTextSprite = textsprite.create(text, 0, 2)
+    export function createTextSprite(text: string, x: number, y: number, c?: number, f?: fancyText.BaseFont) {
+            const pglTextSprite = fancyText.create(text, 0, c || 2, f)
             pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
             pglTextSprite.setFlag(SpriteFlag.Invisible, true)
             if (text == "uptime") {
