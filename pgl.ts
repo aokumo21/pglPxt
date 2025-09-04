@@ -127,17 +127,6 @@ namespace preGameLauncher {
         //TopBarBackgroundSprite
         const pglTbbs = sprites.create(pglTbbi, SpriteKind.Player)
         pglTbbs.setPosition(pglTbbs.width / 2, pglTbbs.height / 2)
-
-        function createTextSprite(text: string, x: number, y: number) {
-            const pglTextSprite = textsprite.create(text, 0, 2)
-            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
-            pglTextSprite.setFlag(SpriteFlag.Invisible, true)
-            if (text == "uptime") {
-                game.onUpdateInterval(1000, function () {
-                    pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
-                })
-            }
-            return pglTextSprite
         }
 
         const pglCfgMainMenu = miniMenu.createMenu(
@@ -591,4 +580,14 @@ namespace preGameLauncher {
         game.popScene()
         return false
     }
+    export function createTextSprite(text: string, x: number, y: number) {
+            const pglTextSprite = textsprite.create(text, 0, 2)
+            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            pglTextSprite.setFlag(SpriteFlag.Invisible, true)
+            if (text == "uptime") {
+                game.onUpdateInterval(1000, function () {
+                    pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
+                })
+            }
+            return pglTextSprite
 }
