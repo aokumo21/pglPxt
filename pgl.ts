@@ -172,7 +172,7 @@ namespace pgl {
             createTextSprite("Profiling-Enabled: " + control.profilingEnabled(), 0, 66),
             createTextSprite("DisplayBrightness: " + screen.brightness(), 0, 74),
             createTextSprite("Volume: " + music.volume(), 0, 82),
-            createTextSprite("uptime", 0, 90),
+            createTextSprite("__pglUptimeString", 0, 90),
             createTextSprite("---------------------------", 0, 109),
             createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
         ]
@@ -583,8 +583,7 @@ namespace pgl {
     export function createTextSprite(text: string, x: number, y: number, c?: number, f?: fancyText.BaseFont) {
             const pglTextSprite = fancyText.create(text, 0, c || 2, f)
             pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
-            pglTextSprite.setFlag(SpriteFlag.Invisible, true)
-            if (text == "uptime") {
+            if (text == "__pglUptimeString") {
                 game.onUpdateInterval(1000, function () {
                     pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
                 })
