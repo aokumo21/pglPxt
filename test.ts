@@ -1,23 +1,23 @@
-preGameLauncher.setConfig(
-    preGameLauncher.createConfig(
+pgl.setConfig(
+    pgl.createConfig(
         "dbgVer",
         "dev",
         0,
         10
     ),
-    preGameLauncher.createConfig(
+    pgl.createConfig(
         "dbgAuthor",
         "aokumo",
         5,
         15
     ),
-    preGameLauncher.createConfig(
+    pgl.createConfig(
         "pglDebug",
         false,
         0,
         0
     )
 )
-preGameLauncher.run(null, null, true)
-console.log("[test.ts] GameVer: "+preGameLauncher.getGameVer())
-console.log("[test.ts] GameAuth: "+preGameLauncher.getgameAuthor())
+pgl.run(null, null, true)
+console.log("[test.ts] GameVer: "+pgl.getGameVer())
+console.log("[test.ts] GameAuth: "+pgl.getgameAuthor())
