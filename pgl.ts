@@ -582,7 +582,10 @@ namespace pgl {
     }
     export function createTextSprite(text: string, x: number, y: number, c?: number, f?: fancyText.BaseFont) {
             const pglTextSprite = fancyText.create(text, 0, c || 2, f)
-            pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            switch(text.charAt(0) == "A" || "w" || "W") {
+                default:
+                pglTextSprite.setPosition(pglTextSprite.width / 2 + x, y)
+            }
             if (text == "__pglUptimeString") {
                 game.onUpdateInterval(1000, function () {
                     pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
