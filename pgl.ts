@@ -23,14 +23,6 @@ namespace pgl {
         fffc36
         cacaca
         000000`
-    let _gameVer: string
-    let _gameAuthor: string
-    export function getGameVer() {  
-        return _gameVer
-    }
-    export function getgameAuthor() {  
-        return _gameAuthor
-    }
     /**
      * This runs the preGameLauncher. Place this at the start of the on start block.
      * @param interval speed of scroll
@@ -41,8 +33,8 @@ namespace pgl {
     //% group="Run"
     //% weight=100
     export function run(gameVer: string, gameAuthor: string, bootToConfig?: boolean) {
-        _gameVer = readString("dbgVer") || gameVer || "msgnotfound"
-        _gameAuthor = readString("dbgAuthor") || gameAuthor || "msgnotfound"
+        export const = readString("dbgVer") || gameVer || "msgnotfound"
+        export const = readString("dbgAuthor") || gameAuthor || "msgnotfound"
         // 0 Transparent
         // 1 White
         // 2 DarkBlue
