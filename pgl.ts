@@ -120,6 +120,7 @@ namespace pgl {
         console.log("pglConfigScreen")
         game.consoleOverlay.setVisible(false)
         scene.setBackgroundColor(14)
+        tiles.setCurrentTilemap(tilemap`level2`)
         //TopBarBackgroundImage
         const pglTbbi = image.create(screen.width, 12)
         pglTbbi.fill(2)
@@ -136,6 +137,7 @@ namespace pgl {
         if (pglDebugEnabled == true) {
             pglCfgMainMenu.items.push(miniMenu.createMenuItem("Dbg"))
         }
+        pglCfgMainMenu.setFlag(SpriteFlag.RelativeToCamera, true)
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Rows, 1)
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.Padding, 1)
         pglCfgMainMenu.setMenuStyleProperty(miniMenu.MenuStyleProperty.ScrollIndicatorColor, 1)
@@ -145,7 +147,7 @@ namespace pgl {
 
         pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Background, 2)
         pglCfgMainMenu.setStyleProperty(miniMenu.StyleKind.Default, miniMenu.StyleProperty.Foreground, 14)
-
+        pglCfgMainMenu.setDimensions(pglCfgMainMenu.width, 20)
         pglCfgMainMenu.setPosition((screen.width / 2), 10)
 
         const pglSoftwareInfo = [
@@ -182,7 +184,7 @@ namespace pgl {
         let pglGUI_ConfigTab: miniMenu.MenuSprite = null
         pglGUI_ConfigTab = miniMenu.createMenuFromArray(create_pglConfigList())
         setupMiniMenu(pglGUI_ConfigTab)
-
+        pglGUI_ConfigTab.setFlag(SpriteFlag.RelativeToCamera, true)
         let pglConfigModifed = false
         pglGUI_ConfigTab.onButtonPressed(controller.A, function (selection, selectedIndex) {
             const pglOptionMin = pglProgCfg.get(selectedIndex).limits.min
@@ -235,7 +237,7 @@ namespace pgl {
             miniMenu.createMenuItem("Clear Data"),
         )
         let pglGUI_DSE: miniMenu.MenuSprite = null
-
+        pglGUI_DebugTab.setFlag(SpriteFlag.RelativeToCamera, true)
         setupMiniMenu(pglGUI_DebugTab)
         pglGUI_DebugTab.onButtonPressed(controller.B, function (selection, selectedIndex) {
             pglGUI_DebugTab.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
@@ -298,7 +300,7 @@ namespace pgl {
             pglSettingsType = pglDSEList.types
             pglGUI_DSE.setMenuItems(pglDSEMenuItems)
         })
-        
+        pglGUI_DSE.setFlag(SpriteFlag.RelativeToCamera, true)
         pglGUI_DSE.onButtonPressed(controller.B, function (selection, selectedIndex) {
             pglGUI_DSE.setStyleProperty(miniMenu.StyleKind.Selected, miniMenu.StyleProperty.Foreground, 2)
             pglGUI_DSE.setButtonEventsEnabled(false)
