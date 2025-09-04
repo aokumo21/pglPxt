@@ -157,9 +157,9 @@ namespace pgl {
             createTextSprite("ProgHash: " + control.programHash(), 0, 58),
             createTextSprite("Version: " + _gameVer, 0, 66),
             createTextSprite("Author: " + _gameAuthor, 0, 74),
-            createTextSprite("Press menu to reboot", 20, 102),
+            createTextSprite("Press menu to reboot", 10, 102),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
+            createTextSprite(`github.com/aokumo21/pglPxt`, 0, 116)
         ]
 
         const pglDeviceInfo = [
@@ -174,7 +174,7 @@ namespace pgl {
             createTextSprite("Volume: " + music.volume(), 0, 82),
             createTextSprite("__pglUptimeString", 0, 90),
             createTextSprite("---------------------------", 0, 109),
-            createTextSprite(`github.com/aokumo21/pglPxt`, 2, 116)
+            createTextSprite(`github.com/aokumo21/pglPxt`, 0, 116)
         ]
         //////////////
         //Config tab//
