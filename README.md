@@ -1,20 +1,20 @@
  
 To use this extention add the following code to be ran before anything else.
 ```
-preGameLauncher.setConfig(
-    preGameLauncher.createConfig(
+pgl.setConfig(
+    pgl.createConfig(
         "twest stwing",
         "hewo :3",
         0, // unused for type string
         10 // this means it can only have up to 10 characters when editing it in the program config menu
     ),
-    preGameLauncher.createConfig(
+    pgl.createConfig(
         "test number",
         12,
         5, // This means the value cannot go below 5 in the program config menu
         15 // This means the value cannot go below 15 in the program config menu
     ),
-    preGameLauncher.createConfig(
+    pgl.createConfig(
         "test boolean",
         true,
         0, // unused for type boolean
@@ -24,7 +24,7 @@ preGameLauncher.setConfig(
 
 // Max of 16 config things. Can be increased by modifying pglCfg.ts if required.
 
-preGameLauncher.run(gameVer, gameAuthor, bootToConfig?)
+pgl.run(gameVer, gameAuthor, bootToConfig?)
 // Replace gameVer with the version of your program. e.g. "v1.0.0"
 // Replace gameAuther with your username. e.g. "aokumo"
 
