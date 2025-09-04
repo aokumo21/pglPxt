@@ -592,6 +592,7 @@ namespace pgl {
                 pglTextSprite.setText("Uptime: " + Math.trunc(control.millis() / 1000) + "s")
             })
         }
+        pglTextSprite.setFlag(SpriteFlag.RelativeToCamera, true)
         return pglTextSprite
     }
 }
