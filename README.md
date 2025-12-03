@@ -1,7 +1,11 @@
 I would not recomend adding this extention due to it probobally being buggy. Also why would you want this? It's kinda just bloat for your MakeCode Arcade projects lol.
+
 But here's how to use it if you want to try it.
+
 Also it seems to break when using the Raycasting extention. This can be fixed by disabling the sprite takover through modifying Raycaster extention and then re-enabling it after running pgl.run()
+
 To use this extention add the following code to be ran before anything else.
+
 ```
 pgl.setConfig(
     pgl.createConfig(
