@@ -32,7 +32,7 @@ pgl.run(gameVer, gameAuthor, bootToConfig?)
 // Is an optional argument, however if set to true then the program will boot straight into the config menu.
 // Setting it to false is the same as not setting it to anything.
 ```
-THIS EXTENTION COMES BUNDLES WITH; arcade-mini-menu, arcade-text, Color Fading
+THIS EXTENTION COMES BUNDLED WITH; arcade-mini-menu, arcade-text, Color Fading
 > Open this page at [https://aokumo21.github.io/pglPxt/](https://aokumo21.github.io/pglPxt/)
 
 ## Use as Extension
